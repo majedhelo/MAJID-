@@ -1,0 +1,2754 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PTE Journey · ماجد</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0B0F1A;
+  --surface: #111827;
+  --surface2: #1A2235;
+  --surface3: #1F2A3D;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.04);
+  --accent: #38BDF8;
+  --accent2: #0284C7;
+  --accent-glow: rgba(56,189,248,0.10);
+  --gold: #FBBF24;
+  --gold2: #FDE68A;
+  --green: #34D399;
+  --red: #F87171;
+  --purple: #A78BFA;
+  --orange: #FB923C;
+  --pink: #F472B6;
+  --text: #E2E8F0;
+  --muted: #64748B;
+  --muted2: #94A3B8;
+
+  --c-grammar: #60A5FA;
+  --c-listening: #A78BFA;
+  --c-reading: #34D399;
+  --c-writing: #FB923C;
+  --c-speaking: #F472B6;
+  --c-ext: #FBBF24;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter','Tajawal',sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+
+/* SPLASH */
+#splash {
+  position: fixed; inset: 0; z-index: 9999;
+  background: var(--bg);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px;
+}
+.sp-code { font-family: 'IBM Plex Mono',monospace; font-size: 0.72rem; color: var(--accent); letter-spacing: 0.1em; }
+.sp-title { font-family: 'IBM Plex Mono',monospace; font-size: 1.8rem; font-weight: 600; color: #fff; }
+.sp-title span { color: var(--accent); }
+.sp-sub { font-family: 'Tajawal',sans-serif; color: var(--muted2); font-size: 0.9rem; }
+.sp-bar { width: 200px; height: 2px; background: var(--surface2); border-radius: 99px; overflow: hidden; }
+.sp-fill { height: 100%; width: 0; background: var(--accent); animation: spLoad 0.4s ease forwards; }
+@keyframes spLoad { to { width: 100%; } }
+
+/* APP */
+#app { display: none; min-height: 100vh; }
+
+/* TOPBAR */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(11,15,26,0.95); backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border); padding: 10px 20px;
+}
+.topbar-inner { max-width: 980px; margin: 0 auto; display: flex; align-items: center; gap: 14px; }
+.t-day { font-family: 'IBM Plex Mono',monospace; font-size: 0.75rem; color: var(--accent); flex-shrink: 0; }
+.t-prog { flex: 1; min-width: 0; }
+.t-prog-meta { display: flex; justify-content: space-between; font-size: 0.65rem; color: var(--muted); margin-bottom: 4px; font-family: 'IBM Plex Mono',monospace; }
+.t-prog-track { height: 3px; background: var(--surface2); border-radius: 99px; overflow: hidden; }
+.t-prog-fill { height: 100%; background: linear-gradient(90deg, var(--accent2), var(--accent)); border-radius: 99px; transition: width 0.8s ease; }
+.t-phase { font-family: 'IBM Plex Mono',monospace; font-size: 0.65rem; padding: 3px 9px; border-radius: 4px; border: 1px solid; flex-shrink: 0; }
+.t-phase.p1 { color: var(--c-grammar); border-color: rgba(96,165,250,0.3); background: rgba(96,165,250,0.07); }
+.t-phase.p2 { color: var(--purple); border-color: rgba(167,139,250,0.3); background: rgba(167,139,250,0.07); }
+.t-phase.p3 { color: var(--green); border-color: rgba(52,211,153,0.3); background: rgba(52,211,153,0.07); }
+.t-phase.p4 { color: var(--gold); border-color: rgba(251,191,36,0.3); background: rgba(251,191,36,0.07); }
+
+/* MAIN */
+main { max-width: 980px; margin: 0 auto; padding: 24px 16px 60px; }
+
+/* MILESTONE */
+.milestone { background: linear-gradient(135deg,rgba(56,189,248,0.08),rgba(251,191,36,0.05)); border: 1px solid var(--accent); border-radius: 12px; padding: 16px 20px; margin-bottom: 22px; display: none; gap: 14px; animation: fadeUp 0.4s ease; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(-8px)} to{opacity:1;transform:translateY(0)} }
+.ms-icon { font-size: 1.8rem; flex-shrink: 0; }
+.ms-body h3 { color: var(--gold2); font-family: 'Tajawal',sans-serif; font-size: 0.95rem; margin-bottom: 4px; }
+.ms-body p { color: var(--text); font-family: 'Tajawal',sans-serif; font-size: 0.85rem; line-height: 1.65; }
+.ms-close { margin-top: 8px; background: none; border: 1px solid var(--accent); color: var(--accent); padding: 4px 12px; border-radius: 5px; cursor: pointer; font-size: 0.72rem; font-family: 'IBM Plex Mono',monospace; }
+
+/* PERFORMANCE PANEL */
+.perf-bar { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; margin-bottom: 20px; }
+.perf-title { font-family: 'IBM Plex Mono',monospace; font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 10px; }
+.perf-skills { display: flex; gap: 8px; flex-wrap: wrap; }
+.perf-skill { flex: 1; min-width: 80px; background: var(--surface2); border-radius: 7px; padding: 8px 10px; }
+.ps-name { font-family: 'IBM Plex Mono',monospace; font-size: 0.6rem; color: var(--muted); text-transform: uppercase; margin-bottom: 5px; }
+.ps-bar { height: 3px; background: var(--surface3); border-radius: 99px; overflow: hidden; margin-bottom: 4px; }
+.ps-fill { height: 100%; border-radius: 99px; transition: width 0.6s ease; }
+.ps-score { font-family: 'IBM Plex Mono',monospace; font-size: 0.68rem; }
+
+/* DAY HEADER */
+.day-hdr { margin-bottom: 20px; }
+.day-eye { font-family: 'IBM Plex Mono',monospace; font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+.day-title { font-size: 1.35rem; font-weight: 700; color: #fff; line-height: 1.3; margin-bottom: 8px; }
+.day-title em { color: var(--accent); font-style: normal; }
+.day-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.dchip { font-family: 'IBM Plex Mono',monospace; font-size: 0.62rem; padding: 3px 9px; border-radius: 4px; border: 1px solid var(--border); color: var(--muted); background: var(--surface); }
+.dchip.weak { border-color: rgba(248,113,113,0.3); color: var(--red); background: rgba(248,113,113,0.06); }
+
+/* SKILL TABS */
+.skill-tabs { display: grid; grid-template-columns: repeat(6,1fr); gap: 6px; margin-bottom: 20px; }
+.sk-tab { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 10px 4px; text-align: center; cursor: pointer; transition: all 0.2s; position: relative; }
+.sk-tab:hover { border-color: rgba(255,255,255,0.15); }
+.sk-tab.active { border-color: var(--sk-c); background: var(--sk-bg); }
+.sk-tab.done::after { content:'✓'; position:absolute; top:4px; right:6px; font-size:0.58rem; color: var(--green); font-weight:700; }
+.sk-tab.weak-flag::before { content:'!'; position:absolute; top:4px; left:6px; font-size:0.58rem; color: var(--red); font-weight:700; }
+.sk-ico { font-size: 1.2rem; margin-bottom: 4px; }
+.sk-lbl { font-family: 'IBM Plex Mono',monospace; font-size: 0.58rem; text-transform: uppercase; letter-spacing: 0.04em; }
+.sk-min { font-size: 0.55rem; color: var(--muted); margin-top: 2px; }
+
+/* PANEL */
+.panel { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; min-height: 360px; }
+.panel-head { padding: 12px 18px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+.ph-left { display: flex; align-items: center; gap: 10px; }
+.ph-label { font-family: 'IBM Plex Mono',monospace; font-size: 0.78rem; color: #fff; font-weight: 600; }
+.ph-src { font-family: 'IBM Plex Mono',monospace; font-size: 0.6rem; color: var(--muted); background: var(--surface2); border: 1px solid var(--border); padding: 2px 8px; border-radius: 4px; }
+.timer { font-family: 'IBM Plex Mono',monospace; font-size: 0.75rem; color: var(--accent); background: var(--surface2); border: 1px solid var(--border); padding: 4px 12px; border-radius: 6px; cursor: pointer; transition: all 0.2s; }
+.timer:hover { border-color: var(--accent); background: var(--accent-glow); }
+.timer.run { color: var(--gold); border-color: rgba(251,191,36,0.4); }
+.panel-body { padding: 20px; }
+
+/* LOADING */
+.ld { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:50px 20px; gap:12px; }
+.spin { width:32px; height:32px; border:2px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin 0.7s linear infinite; }
+@keyframes spin{to{transform:rotate(360deg)}}
+.ld-txt { font-family:'IBM Plex Mono',monospace; font-size:0.7rem; color:var(--muted); }
+.ld-txt::after { content:''; animation:dots 1s steps(3,end) infinite; }
+@keyframes dots{0%{content:''}33%{content:'.'}66%{content:'..'}100%{content:'...'}}
+
+/* ── GRAMMAR ── */
+.rule-box { background:rgba(96,165,250,0.06); border:1px solid rgba(96,165,250,0.18); border-radius:8px; padding:14px 16px; margin-bottom:14px; }
+.rule-tag { font-family:'IBM Plex Mono',monospace; font-size:0.6rem; color:var(--c-grammar); text-transform:uppercase; letter-spacing:0.07em; margin-bottom:6px; }
+.rule-ar { font-family:'Tajawal',sans-serif; font-size:0.95rem; line-height:1.75; color:var(--text); margin-bottom:10px; }
+.rule-formula { font-family:'IBM Plex Mono',monospace; font-size:0.8rem; color:var(--accent); background:var(--surface2); padding:8px 12px; border-radius:6px; }
+.ex-card { background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:10px 14px; margin-bottom:8px; }
+.ex-en { font-family:'Inter',sans-serif; font-size:0.88rem; color:var(--text); margin-bottom:4px; }
+.ex-ar { font-family:'Tajawal',sans-serif; color:var(--gold); font-size:0.82rem; }
+.ex-note { font-size:0.7rem; color:var(--muted); margin-top:3px; }
+.yt-link-box { background:rgba(255,68,68,0.06); border:1px solid rgba(255,68,68,0.2); border-radius:8px; padding:10px 14px; margin:12px 0; display:flex; align-items:center; gap:10px; }
+.yt-link-box a { color:#FF6B6B; font-family:'IBM Plex Mono',monospace; font-size:0.75rem; text-decoration:none; }
+.yt-link-box a:hover { text-decoration:underline; }
+
+/* ── LISTENING ── */
+.audio-card { background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:16px; margin-bottom:16px; }
+.ac-top { display:flex; gap:12px; margin-bottom:12px; }
+.ac-thumb { width:46px; height:46px; border-radius:7px; background:linear-gradient(135deg,var(--accent2),var(--bg)); display:flex; align-items:center; justify-content:center; font-size:1.3rem; flex-shrink:0; }
+.ac-info h4 { font-size:0.88rem; font-weight:600; margin-bottom:2px; }
+.ac-info p { font-size:0.72rem; color:var(--muted); }
+.ac-url { display:inline-flex; align-items:center; gap:5px; font-family:'IBM Plex Mono',monospace; font-size:0.68rem; color:#FF6B6B; text-decoration:none; margin-top:4px; }
+.ac-url:hover { text-decoration:underline; }
+.player { background:var(--bg); border-radius:7px; padding:10px 12px; }
+.pl-bar { height:3px; background:var(--surface3); border-radius:99px; margin-bottom:8px; cursor:pointer; overflow:hidden; }
+.pl-prog { height:100%; background:var(--accent); border-radius:99px; width:0; transition:width 0.3s; }
+.pl-ctrl { display:flex; align-items:center; gap:10px; }
+.pl-play { width:28px; height:28px; border-radius:50%; background:var(--accent); border:none; color:var(--bg); cursor:pointer; font-size:0.75rem; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:all 0.2s; }
+.pl-play:hover { background:var(--accent2); color:#fff; }
+.pl-time { font-family:'IBM Plex Mono',monospace; font-size:0.65rem; color:var(--muted); }
+.pl-spd { margin-left:auto; background:var(--surface2); border:1px solid var(--border); color:var(--muted); padding:2px 8px; border-radius:4px; cursor:pointer; font-size:0.62rem; font-family:'IBM Plex Mono',monospace; }
+.transcript { background:var(--bg); border:1px solid var(--border); border-radius:7px; padding:12px 14px; margin-top:10px; font-size:0.83rem; line-height:1.85; display:none; font-family:'Inter',sans-serif; }
+.show-tr { width:100%; background:none; border:1px dashed var(--border2); color:var(--muted); padding:6px; border-radius:7px; cursor:pointer; font-size:0.68rem; margin-top:8px; font-family:'IBM Plex Mono',monospace; transition:all 0.2s; }
+.show-tr:hover { border-color:var(--accent); color:var(--accent); }
+
+/* external tool card */
+.ext-tool { background:rgba(251,191,36,0.05); border:1px solid rgba(251,191,36,0.2); border-radius:10px; padding:14px 16px; margin:14px 0; }
+.et-head { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+.et-badge { font-family:'IBM Plex Mono',monospace; font-size:0.62rem; color:var(--gold); background:rgba(251,191,36,0.12); border:1px solid rgba(251,191,36,0.25); padding:2px 8px; border-radius:4px; }
+.et-title { font-size:0.82rem; font-weight:600; }
+.et-task { font-size:0.8rem; color:var(--muted2); line-height:1.65; margin-bottom:8px; }
+.et-link { display:inline-flex; align-items:center; gap:5px; font-family:'IBM Plex Mono',monospace; font-size:0.7rem; color:var(--accent); text-decoration:none; padding:5px 12px; border:1px solid var(--accent); border-radius:5px; transition:all 0.2s; }
+.et-link:hover { background:var(--accent-glow); }
+.et-time { font-family:'IBM Plex Mono',monospace; font-size:0.62rem; color:var(--muted); margin-top:6px; }
+
+/* fill blanks */
+.task-box { background:var(--surface2); border:1px solid rgba(167,139,250,0.2); border-radius:9px; padding:12px 14px; margin-top:12px; }
+.task-lbl { font-family:'IBM Plex Mono',monospace; font-size:0.62rem; color:var(--purple); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:10px; }
+.fill-row { display:flex; align-items:center; gap:7px; flex-wrap:wrap; font-size:0.82rem; margin-bottom:7px; font-family:'Inter',sans-serif; }
+.fill-row input { background:var(--bg); border:1px solid var(--border); color:var(--text); padding:3px 8px; border-radius:4px; font-size:0.78rem; width:100px; outline:none; font-family:'IBM Plex Mono',monospace; }
+.fill-row input:focus { border-color:var(--purple); }
+.fill-row input.ok { border-color:var(--green); color:var(--green); }
+.fill-row input.no { border-color:var(--red); color:var(--red); }
+.chk-btn { background:var(--bg); border:1px solid var(--border); color:var(--muted); padding:6px 16px; border-radius:6px; cursor:pointer; font-size:0.7rem; margin-top:8px; transition:all 0.2s; font-family:'IBM Plex Mono',monospace; }
+.chk-btn:hover { border-color:var(--accent); color:var(--accent); }
+
+/* phrases */
+.ph-row { display:flex; gap:8px; align-items:baseline; padding:8px 0; border-bottom:1px solid var(--border2); flex-wrap:wrap; }
+.ph-en { font-family:'IBM Plex Mono',monospace; font-size:0.75rem; color:var(--accent); }
+.ph-ar { font-family:'Tajawal',sans-serif; color:var(--gold); font-size:0.82rem; }
+.ph-note { font-size:0.68rem; color:var(--muted); }
+
+/* ── READING ── */
+.read-tools { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px; }
+.rtool { font-family:'IBM Plex Mono',monospace; font-size:0.65rem; padding:4px 10px; background:var(--surface2); border:1px solid var(--border); color:var(--muted); border-radius:5px; cursor:pointer; transition:all 0.2s; }
+.rtool:hover,.rtool.on { color:var(--accent); border-color:var(--accent); background:var(--accent-glow); }
+.src-badge { display:inline-flex; align-items:center; gap:5px; font-family:'IBM Plex Mono',monospace; font-size:0.62rem; color:var(--muted); background:var(--surface2); border:1px solid var(--border); border-radius:5px; padding:4px 9px; margin-bottom:12px; }
+.src-badge a { color:var(--accent); text-decoration:none; }
+.strategy-tip { background:rgba(52,211,153,0.05); border:1px solid rgba(52,211,153,0.15); border-radius:6px; padding:8px 12px; margin-bottom:12px; font-size:0.72rem; color:var(--green); font-family:'IBM Plex Mono',monospace; }
+.read-text { font-family:'Inter',sans-serif; font-size:0.92rem; line-height:1.95; color:var(--text); }
+.read-text p { margin-bottom:12px; }
+.vw { border-bottom:1px dashed var(--accent2); cursor:pointer; padding:0 1px; transition:background 0.15s; }
+.vw:hover { background:var(--accent-glow); }
+.vocab-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(175px,1fr)); gap:7px; margin-top:14px; }
+.vc { background:var(--surface2); border:1px solid var(--border); border-radius:7px; padding:9px 11px; }
+.vc-en { font-family:'IBM Plex Mono',monospace; font-size:0.75rem; color:var(--accent); font-weight:600; }
+.vc-pron { font-size:0.62rem; color:var(--muted); font-family:'IBM Plex Mono',monospace; margin:2px 0; }
+.vc-ar { font-family:'Tajawal',sans-serif; color:var(--gold); font-size:0.82rem; }
+.vc-def { font-size:0.68rem; color:var(--muted); margin-top:2px; line-height:1.4; }
+
+/* ── WRITING ── */
+.w-prompt { border-left:2px solid var(--c-writing); padding:12px 14px; background:rgba(251,146,60,0.05); border-radius:0 8px 8px 0; margin-bottom:14px; }
+.w-prompt-lbl { font-family:'IBM Plex Mono',monospace; font-size:0.6rem; color:var(--c-writing); text-transform:uppercase; margin-bottom:6px; }
+.w-struct { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:6px; margin-bottom:12px; }
+.wchip { background:var(--surface2); border:1px solid var(--border); border-radius:6px; padding:7px 9px; }
+.wchip strong { display:block; font-size:0.58rem; color:var(--c-writing); font-family:'IBM Plex Mono',monospace; margin-bottom:2px; }
+.wchip span { font-size:0.72rem; color:var(--muted); }
+.w-phrases { display:flex; gap:5px; flex-wrap:wrap; margin-bottom:10px; }
+.wph { background:var(--surface2); border:1px solid var(--border); border-radius:4px; padding:3px 9px; font-size:0.68rem; color:var(--muted); cursor:pointer; font-family:'IBM Plex Mono',monospace; transition:all 0.2s; }
+.wph:hover { color:var(--c-writing); border-color:var(--c-writing); }
+.editor { width:100%; min-height:170px; background:var(--bg); border:1px solid var(--border); border-radius:9px; padding:13px; color:var(--text); font-size:0.88rem; font-family:'Inter',sans-serif; line-height:1.8; outline:none; resize:vertical; transition:border-color 0.2s; }
+.editor:focus { border-color:var(--c-writing); }
+.w-foot { display:flex; justify-content:space-between; align-items:center; margin-top:8px; }
+.wcount { font-family:'IBM Plex Mono',monospace; font-size:0.65rem; color:var(--muted); }
+.ai-btn { background:var(--accent); border:none; color:var(--bg); padding:8px 20px; border-radius:7px; cursor:pointer; font-weight:700; font-size:0.75rem; font-family:'IBM Plex Mono',monospace; transition:all 0.2s; }
+.ai-btn:hover { background:var(--accent2); color:#fff; }
+.ai-btn:disabled { opacity:0.4; cursor:not-allowed; }
+.fb-box { background:var(--bg); border:1px solid var(--border); border-radius:9px; padding:14px; margin-top:12px; display:none; font-size:0.82rem; line-height:1.85; font-family:'Inter',sans-serif; }
+.fb-box h4 { font-family:'IBM Plex Mono',monospace; color:var(--accent); font-size:0.68rem; text-transform:uppercase; margin-bottom:8px; }
+
+/* ── SPEAKING ── */
+.sp-head { display:flex; gap:10px; align-items:center; margin-bottom:14px; }
+.sp-av { width:42px; height:42px; border-radius:50%; flex-shrink:0; background:linear-gradient(135deg,var(--gold),var(--red)); display:flex; align-items:center; justify-content:center; font-size:1.3rem; }
+.sp-info h4 { font-size:0.88rem; font-weight:700; }
+.sp-info p { font-size:0.7rem; color:var(--muted); }
+.sp-ctx { background:rgba(251,191,36,0.05); border:1px solid rgba(251,191,36,0.18); border-radius:7px; padding:9px 13px; margin-bottom:14px; font-size:0.78rem; line-height:1.65; color:var(--muted2); }
+.sp-ctx strong { color:var(--gold); }
+.bubbles { display:flex; flex-direction:column; gap:9px; margin-bottom:14px; }
+.bub { max-width:86%; border-radius:11px; padding:9px 13px; font-size:0.82rem; line-height:1.65; font-family:'Inter',sans-serif; }
+.bub.other { background:var(--surface2); border:1px solid var(--border); align-self:flex-start; border-bottom-left-radius:3px; }
+.bub.other .bname { font-size:0.6rem; color:var(--muted); margin-bottom:3px; font-family:'IBM Plex Mono',monospace; }
+.bub.me { background:var(--accent-glow); border:1px solid rgba(56,189,248,0.2); align-self:flex-end; border-bottom-right-radius:3px; }
+.bub.me .coach { font-size:0.65rem; color:var(--accent); margin-top:5px; font-style:italic; }
+.bub.prompt-b { background:rgba(251,191,36,0.05); border:1px solid rgba(251,191,36,0.18); align-self:flex-start; font-style:italic; color:var(--muted2); font-size:0.78rem; }
+.sp-input { width:100%; min-height:75px; background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:11px 13px; color:var(--text); font-size:0.85rem; font-family:'Inter',sans-serif; line-height:1.7; outline:none; resize:none; transition:border-color 0.2s; }
+.sp-input:focus { border-color:var(--c-speaking); }
+.sp-ctrl { display:flex; gap:7px; margin-top:8px; flex-wrap:wrap; }
+.sp-btn { background:var(--c-speaking); border:none; color:#fff; padding:8px 18px; border-radius:7px; cursor:pointer; font-weight:700; font-size:0.72rem; font-family:'IBM Plex Mono',monospace; transition:all 0.2s; }
+.sp-btn:hover { filter:brightness(1.15); }
+.sp-sec { background:none; border:1px solid var(--border); color:var(--muted); padding:8px 14px; border-radius:7px; cursor:pointer; font-size:0.7rem; font-family:'IBM Plex Mono',monospace; transition:all 0.2s; }
+.sp-sec:hover { border-color:var(--c-speaking); color:var(--c-speaking); }
+.pte-tip { margin-top:12px; background:rgba(167,139,250,0.05); border:1px solid rgba(167,139,250,0.18); border-radius:7px; padding:10px 13px; font-size:0.75rem; color:var(--purple); font-family:'IBM Plex Mono',monospace; }
+
+/* ── COMPREHENSION ── */
+.cq { background:var(--surface2); border:1px solid var(--border); border-radius:9px; padding:12px 14px; margin-bottom:9px; }
+.cq-q { font-size:0.85rem; margin-bottom:9px; font-family:'Inter',sans-serif; }
+.cq-opts { display:flex; flex-direction:column; gap:5px; }
+.cq-opt { background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:8px 12px; cursor:pointer; font-size:0.78rem; text-align:left; color:var(--text); transition:all 0.18s; font-family:'Inter',sans-serif; }
+.cq-opt:hover { border-color:rgba(255,255,255,0.2); }
+.cq-opt.correct { border-color:var(--green); background:rgba(52,211,153,0.07); color:var(--green); }
+.cq-opt.wrong { border-color:var(--red); background:rgba(248,113,113,0.07); color:var(--red); }
+
+/* ── DONE BTN ── */
+.done-btn { display:block; width:100%; margin-top:18px; background:var(--accent); border:none; color:var(--bg); padding:12px; border-radius:9px; cursor:pointer; font-weight:700; font-size:0.82rem; font-family:'IBM Plex Mono',monospace; transition:all 0.2s; }
+.done-btn:hover { background:var(--accent2); color:#fff; }
+.done-btn:disabled { opacity:0.35; cursor:not-allowed; }
+
+/* SECTION LABEL */
+.slbl { font-family:'IBM Plex Mono',monospace; font-size:0.6rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.07em; margin-bottom:10px; }
+
+/* NAV */
+.nav-row { max-width:980px; margin:0 auto; padding:0 16px 40px; display:flex; gap:8px; }
+.nav-b { flex:1; background:var(--surface); border:1px solid var(--border); color:var(--muted); padding:10px; border-radius:9px; cursor:pointer; font-size:0.75rem; font-family:'IBM Plex Mono',monospace; transition:all 0.2s; }
+.nav-b:hover { border-color:rgba(255,255,255,0.18); color:#fff; }
+.nav-b.nx { background:var(--accent); color:var(--bg); border-color:var(--accent); font-weight:700; }
+.nav-b.nx:hover { background:var(--accent2); color:#fff; }
+
+/* TOOLTIP */
+#tip { position:fixed; z-index:9999; pointer-events:none; background:var(--surface); border:1px solid var(--accent); border-radius:9px; padding:9px 13px; box-shadow:0 8px 28px rgba(0,0,0,0.6); max-width:210px; display:none; }
+.tip-en { font-family:'IBM Plex Mono',monospace; font-size:0.82rem; color:var(--accent); font-weight:600; }
+.tip-pr { font-size:0.62rem; color:var(--muted); font-family:'IBM Plex Mono',monospace; margin:2px 0; }
+.tip-ar { font-family:'Tajawal',sans-serif; color:var(--gold); font-size:0.85rem; }
+.tip-df { font-size:0.7rem; color:var(--muted); margin-top:3px; line-height:1.45; }
+
+/* AI feedback */
+.ai-res h3 { color:var(--accent); font-size:0.78rem; margin:10px 0 5px; font-family:'IBM Plex Mono',monospace; text-transform:uppercase; }
+.ai-res ul { padding-left:14px; margin-bottom:8px; }
+.ai-res li { margin-bottom:4px; font-size:0.8rem; }
+
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--surface2);border-radius:99px}
+
+@media(max-width:640px){
+  .skill-tabs{grid-template-columns:repeat(3,1fr)}
+  .day-title{font-size:1.1rem}
+  .topbar-inner{flex-wrap:wrap}
+}
+
+/* ── VOCABULARY SECTION ── */
+.vocab-section {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 14px; padding: 20px; margin-top: 20px;
+}
+.vs-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 16px;
+}
+.vs-title {
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem;
+  color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em;
+}
+.vs-day { font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem; color: var(--muted); }
+.vocab-word-block {
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 16px; margin-bottom: 12px;
+  transition: border-color 0.2s;
+}
+.vocab-word-block:hover { border-color: rgba(56,189,248,0.2); }
+.vb-main { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+.vb-word { font-family: 'IBM Plex Mono', monospace; font-size: 1rem; color: #fff; font-weight: 600; }
+.vb-pron { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; color: var(--muted); }
+.vb-pos { font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem; color: var(--accent); background: var(--accent-glow); border: 1px solid rgba(56,189,248,0.2); padding: 1px 6px; border-radius: 3px; }
+.vb-ar { font-family: 'Tajawal', sans-serif; color: var(--gold); font-size: 0.88rem; margin-bottom: 6px; }
+.vb-def { font-size: 0.78rem; color: var(--muted2); margin-bottom: 10px; line-height: 1.5; }
+.vb-ex { font-size: 0.78rem; color: var(--text); font-style: italic; margin-bottom: 12px; background: var(--bg); border-radius: 5px; padding: 6px 10px; border-left: 2px solid var(--accent2); }
+.vb-syns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.vb-syn-card { border-radius: 7px; padding: 9px 11px; }
+.vb-syn-card.academic { background: rgba(167,139,250,0.06); border: 1px solid rgba(167,139,250,0.18); }
+.vb-syn-card.phrasal { background: rgba(251,191,36,0.06); border: 1px solid rgba(251,191,36,0.18); }
+.vsc-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.58rem; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 5px; }
+.vb-syn-card.academic .vsc-label { color: var(--purple); }
+.vb-syn-card.phrasal .vsc-label { color: var(--gold); }
+.vsc-words { display: flex; flex-direction: column; gap: 4px; }
+.vsc-word { display: flex; justify-content: space-between; align-items: baseline; }
+.vsc-en { font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; color: var(--text); font-weight: 600; }
+.vsc-ar { font-family: 'Tajawal', sans-serif; font-size: 0.72rem; color: var(--muted2); }
+.vsc-ex { font-size: 0.68rem; color: var(--muted); font-style: italic; margin-top: 3px; }
+.vs-loading { display: flex; align-items: center; gap: 10px; padding: 20px; color: var(--muted); font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; }
+
+/* ── PHASE EVAL MODAL ── */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 9000;
+  background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
+  display: none; align-items: center; justify-content: center; padding: 16px;
+}
+.modal-overlay.open { display: flex; }
+.modal-box {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; width: 100%; max-width: 680px;
+  max-height: 90vh; overflow-y: auto; padding: 24px;
+  animation: fadeUp 0.3s ease;
+}
+.modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.modal-title { font-family: 'IBM Plex Mono', monospace; font-size: 0.88rem; color: #fff; font-weight: 600; }
+.modal-close { background: none; border: 1px solid var(--border); color: var(--muted); padding: 4px 12px; border-radius: 5px; cursor: pointer; font-size: 0.72rem; font-family: 'IBM Plex Mono', monospace; }
+.modal-close:hover { border-color: var(--red); color: var(--red); }
+
+/* ── STATS DASHBOARD ── */
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px,1fr)); gap: 10px; margin-bottom: 20px; }
+.stat-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 9px; padding: 12px 14px; text-align: center; }
+.sc-val { font-family: 'IBM Plex Mono', monospace; font-size: 1.4rem; font-weight: 700; color: #fff; margin-bottom: 3px; }
+.sc-lbl { font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+.chart-wrap { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 14px; }
+.chart-title { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 12px; }
+.bar-chart { display: flex; align-items: flex-end; gap: 8px; height: 100px; }
+.bc-col { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; }
+.bc-bar { width: 100%; border-radius: 4px 4px 0 0; transition: height 0.6s ease; min-height: 4px; }
+.bc-lbl { font-family: 'IBM Plex Mono', monospace; font-size: 0.55rem; color: var(--muted); text-transform: uppercase; }
+.bc-val { font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; color: var(--text); }
+.weak-list { background: rgba(248,113,113,0.05); border: 1px solid rgba(248,113,113,0.2); border-radius: 9px; padding: 14px; margin-bottom: 14px; }
+.wl-title { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; color: var(--red); text-transform: uppercase; margin-bottom: 10px; }
+.wl-item { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.wl-name { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; color: var(--text); width: 70px; }
+.wl-track { flex: 1; height: 4px; background: var(--surface3); border-radius: 99px; overflow: hidden; }
+.wl-fill { height: 100%; background: var(--red); border-radius: 99px; }
+.wl-score { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; color: var(--red); width: 35px; text-align: right; }
+
+/* ── PHASE EVAL ── */
+.eval-section { margin-bottom: 20px; }
+.eval-q { background: var(--surface2); border: 1px solid var(--border); border-radius: 9px; padding: 14px; margin-bottom: 10px; }
+.eval-q-text { font-size: 0.85rem; margin-bottom: 10px; font-family: 'Inter', sans-serif; }
+.eval-textarea { width: 100%; min-height: 80px; background: var(--bg); border: 1px solid var(--border); border-radius: 7px; padding: 10px; color: var(--text); font-family: 'Inter', sans-serif; font-size: 0.83rem; line-height: 1.7; outline: none; resize: none; }
+.eval-textarea:focus { border-color: var(--accent); }
+.eval-submit { background: var(--accent); border: none; color: var(--bg); padding: 10px 24px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.78rem; font-family: 'IBM Plex Mono', monospace; margin-top: 12px; width: 100%; transition: all 0.2s; }
+.eval-submit:hover { background: var(--accent2); color: #fff; }
+.eval-result { background: var(--bg); border: 1px solid var(--border); border-radius: 9px; padding: 16px; margin-top: 14px; display: none; }
+.eval-result h4 { font-family: 'IBM Plex Mono', monospace; color: var(--accent); font-size: 0.7rem; text-transform: uppercase; margin-bottom: 10px; }
+
+/* review badge */
+.review-badge { display: inline-flex; align-items: center; gap: 5px; font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem; background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.25); color: var(--red); padding: 2px 8px; border-radius: 4px; }
+
+/* nav-extra buttons */
+.nav-extra { max-width: 980px; margin: 0 auto; padding: 0 16px 12px; display: flex; gap: 8px; }
+.nex-btn { background: var(--surface); border: 1px solid var(--border); color: var(--muted); padding: 8px 14px; border-radius: 8px; cursor: pointer; font-size: 0.7rem; font-family: 'IBM Plex Mono', monospace; transition: all 0.2s; display: flex; align-items: center; gap: 5px; }
+.nex-btn:hover { border-color: rgba(255,255,255,0.18); color: #fff; }
+.nex-btn.highlight { border-color: rgba(56,189,248,0.3); color: var(--accent); }
+
+/* ── VOCAB BANK ── */
+.vbank-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:8px; margin-top:14px; }
+.vbank-card { background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:10px 12px; cursor:pointer; transition:all 0.2s; }
+.vbank-card:hover { border-color:var(--accent); }
+.vbank-card.due { border-color:rgba(251,191,36,0.4); background:rgba(251,191,36,0.04); }
+.vbank-card.mastered { border-color:rgba(52,211,153,0.3); background:rgba(52,211,153,0.04); }
+.vbc-word { font-family:'IBM Plex Mono',monospace; font-size:0.82rem; color:#fff; font-weight:600; margin-bottom:3px; }
+.vbc-ar { font-family:'Tajawal',sans-serif; font-size:0.78rem; color:var(--gold); }
+.vbc-next { font-family:'IBM Plex Mono',monospace; font-size:0.58rem; color:var(--muted); margin-top:4px; }
+.vbc-lvl { display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:0.55rem; padding:1px 5px; border-radius:3px; margin-top:3px; }
+.vbc-lvl.new { background:rgba(96,165,250,0.15); color:var(--c-grammar); }
+.vbc-lvl.learning { background:rgba(251,191,36,0.15); color:var(--gold); }
+.vbc-lvl.mastered { background:rgba(52,211,153,0.15); color:var(--green); }
+
+/* ── SPACED REPETITION QUIZ ── */
+.sr-card { background:var(--surface2); border:1px solid var(--border); border-radius:14px; padding:28px; text-align:center; min-height:220px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; }
+.sr-word { font-family:'IBM Plex Mono',monospace; font-size:2rem; font-weight:700; color:#fff; }
+.sr-hint { font-size:0.78rem; color:var(--muted); font-family:'IBM Plex Mono',monospace; }
+.sr-reveal { background:var(--accent); border:none; color:var(--bg); padding:10px 28px; border-radius:8px; cursor:pointer; font-weight:700; font-size:0.82rem; font-family:'IBM Plex Mono',monospace; transition:all 0.2s; }
+.sr-reveal:hover { background:var(--accent2); color:#fff; }
+.sr-answer { display:none; }
+.sr-ar { font-family:'Tajawal',sans-serif; font-size:1.2rem; color:var(--gold); margin-bottom:6px; }
+.sr-def { font-size:0.82rem; color:var(--muted2); margin-bottom:12px; }
+.sr-btns { display:flex; gap:10px; justify-content:center; }
+.sr-btn { padding:9px 20px; border-radius:8px; border:none; cursor:pointer; font-weight:700; font-size:0.78rem; font-family:'IBM Plex Mono',monospace; transition:all 0.2s; }
+.sr-btn.easy { background:rgba(52,211,153,0.15); color:var(--green); border:1px solid rgba(52,211,153,0.3); }
+.sr-btn.easy:hover { background:rgba(52,211,153,0.25); }
+.sr-btn.hard { background:rgba(251,191,36,0.15); color:var(--gold); border:1px solid rgba(251,191,36,0.3); }
+.sr-btn.hard:hover { background:rgba(251,191,36,0.25); }
+.sr-btn.forgot { background:rgba(248,113,113,0.15); color:var(--red); border:1px solid rgba(248,113,113,0.3); }
+.sr-btn.forgot:hover { background:rgba(248,113,113,0.25); }
+.sr-progress { font-family:'IBM Plex Mono',monospace; font-size:0.68rem; color:var(--muted); margin-top:10px; }
+
+/* ── PRONUNCIATION TRACK ── */
+.pron-track { background:rgba(167,139,250,0.05); border:1px solid rgba(167,139,250,0.18); border-radius:10px; padding:14px 16px; margin-top:14px; }
+.pt-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+.pt-title { font-family:'IBM Plex Mono',monospace; font-size:0.65rem; color:var(--purple); text-transform:uppercase; letter-spacing:0.07em; }
+.pt-timer { font-family:'IBM Plex Mono',monospace; font-size:0.72rem; color:var(--purple); background:rgba(167,139,250,0.1); border:1px solid rgba(167,139,250,0.2); padding:3px 10px; border-radius:5px; }
+.pt-steps { display:flex; flex-direction:column; gap:8px; }
+.pt-step { display:flex; gap:10px; align-items:flex-start; }
+.pts-num { font-family:'IBM Plex Mono',monospace; font-size:0.65rem; color:var(--purple); flex-shrink:0; margin-top:2px; }
+.pts-txt { font-family:'Tajawal',sans-serif; font-size:0.82rem; color:var(--muted2); line-height:1.6; }
+.pts-txt strong { color:var(--text); }
+.pron-word-focus { font-family:'IBM Plex Mono',monospace; font-size:1.1rem; color:var(--accent); font-weight:700; background:var(--bg); padding:8px 16px; border-radius:7px; text-align:center; margin:10px 0; letter-spacing:0.1em; }
+.pron-ipa { font-size:0.78rem; color:var(--muted); text-align:center; font-family:'IBM Plex Mono',monospace; margin-bottom:10px; }
+.record-btn { width:100%; background:rgba(167,139,250,0.1); border:1px dashed rgba(167,139,250,0.3); color:var(--purple); padding:10px; border-radius:8px; cursor:pointer; font-family:'IBM Plex Mono',monospace; font-size:0.72rem; transition:all 0.2s; }
+.record-btn:hover { background:rgba(167,139,250,0.18); border-style:solid; }
+
+/* ── FRIDAY REVIEW ── */
+.friday-mode { background:linear-gradient(135deg,rgba(251,191,36,0.08),rgba(52,211,153,0.05)); border:1px solid rgba(251,191,36,0.2); border-radius:14px; padding:20px; }
+.fm-header { text-align:center; margin-bottom:20px; }
+.fm-icon { font-size:2.5rem; margin-bottom:8px; }
+.fm-title { font-family:'Tajawal',sans-serif; font-size:1.1rem; color:var(--gold); font-weight:700; }
+.fm-sub { font-family:'Tajawal',sans-serif; font-size:0.82rem; color:var(--muted2); margin-top:4px; }
+.fm-sections { display:grid; gap:12px; }
+.fm-section { background:var(--surface2); border-radius:10px; padding:14px; }
+.fms-title { font-family:'IBM Plex Mono',monospace; font-size:0.65rem; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:10px; }
+
+/* ── PTE SIMULATOR ── */
+.pte-sim { background:var(--surface2); border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+.pte-sim-header { background:var(--surface3); padding:12px 16px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--border); }
+.pte-sim-title { font-family:'IBM Plex Mono',monospace; font-size:0.72rem; color:#fff; font-weight:600; }
+.pte-countdown { font-family:'IBM Plex Mono',monospace; font-size:0.88rem; color:var(--red); font-weight:700; }
+.pte-prompt { padding:20px; font-family:'Inter',sans-serif; font-size:0.88rem; line-height:1.8; color:var(--text); background:var(--bg); border-radius:8px; margin:14px; }
+.pte-rec-area { margin:14px; background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:16px; text-align:center; }
+.pte-mic { font-size:2rem; margin-bottom:8px; }
+.pte-status { font-family:'IBM Plex Mono',monospace; font-size:0.72rem; color:var(--muted); }
+.pte-writebox { margin:14px; }
+.pte-writebox textarea { width:100%; min-height:120px; background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:12px; color:var(--text); font-family:'Inter',sans-serif; font-size:0.85rem; outline:none; resize:none; }
+.pte-writebox textarea:focus { border-color:var(--accent); }
+.pte-submit { margin:0 14px 14px; width:calc(100% - 28px); background:var(--accent); border:none; color:var(--bg); padding:10px; border-radius:8px; cursor:pointer; font-weight:700; font-size:0.78rem; font-family:'IBM Plex Mono',monospace; }
+.pte-submit:hover { background:var(--accent2); color:#fff; }
+.pte-score-card { margin:14px; background:rgba(52,211,153,0.06); border:1px solid rgba(52,211,153,0.2); border-radius:8px; padding:14px; display:none; }
+.pte-score-card h4 { font-family:'IBM Plex Mono',monospace; font-size:0.68rem; color:var(--green); text-transform:uppercase; margin-bottom:8px; }
+
+/* ── IMPORT PHASE ── */
+.import-zone { border:2px dashed var(--border); border-radius:12px; padding:24px; text-align:center; margin-bottom:16px; transition:all 0.2s; }
+.import-zone:hover, .import-zone.drag { border-color:var(--accent); background:var(--accent-glow); }
+.import-icon { font-size:2rem; margin-bottom:8px; }
+.import-title { font-family:'Tajawal',sans-serif; font-size:0.9rem; color:var(--text); margin-bottom:4px; }
+.import-sub { font-family:'IBM Plex Mono',monospace; font-size:0.65rem; color:var(--muted); }
+.import-textarea { width:100%; min-height:120px; background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:12px; color:var(--text); font-family:'IBM Plex Mono',monospace; font-size:0.72rem; outline:none; resize:vertical; margin:10px 0; }
+.import-textarea:focus { border-color:var(--accent); }
+.import-btn { background:var(--accent); border:none; color:var(--bg); padding:10px 24px; border-radius:8px; cursor:pointer; font-weight:700; font-size:0.78rem; font-family:'IBM Plex Mono',monospace; width:100%; transition:all 0.2s; margin-top:6px; }
+.import-btn:hover { background:var(--accent2); color:#fff; }
+.import-result { background:var(--surface2); border-radius:8px; padding:12px 14px; margin-top:10px; font-family:'Tajawal',sans-serif; font-size:0.82rem; display:none; }
+.import-result.ok { border:1px solid rgba(52,211,153,0.3); color:var(--green); }
+.import-result.err { border:1px solid rgba(248,113,113,0.3); color:var(--red); }
+.imported-phases { margin-top:14px; }
+.ip-card { background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:10px 14px; margin-bottom:8px; display:flex; align-items:center; justify-content:space-between; }
+.ip-info { font-family:'IBM Plex Mono',monospace; font-size:0.72rem; color:var(--text); }
+.ip-meta { font-family:'IBM Plex Mono',monospace; font-size:0.6rem; color:var(--muted); margin-top:2px; }
+.ip-del { background:none; border:1px solid rgba(248,113,113,0.3); color:var(--red); padding:3px 10px; border-radius:5px; cursor:pointer; font-size:0.65rem; font-family:'IBM Plex Mono',monospace; }
+
+/* ── FRIDAY BADGE in topbar ── */
+.friday-badge { font-family:'IBM Plex Mono',monospace; font-size:0.62rem; background:rgba(251,191,36,0.12); border:1px solid rgba(251,191,36,0.3); color:var(--gold); padding:2px 8px; border-radius:4px; }
+
+</style>
+</head>
+<body>
+
+<div id="splash">
+  <div class="sp-code">// loading phase_1.js</div>
+  <div class="sp-title">PTE <span>Journey</span></div>
+  <div class="sp-sub">خطة ماجد الأكاديمية · A2 → PTE Academic</div>
+  <div class="sp-bar"><div class="sp-fill"></div></div>
+</div>
+
+<div id="app">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="t-day" id="tDay">day_001</div>
+      <div class="t-prog">
+        <div class="t-prog-meta">
+          <span id="tProgLbl">0 / 52 days · Phase 1</span>
+          <span id="tGoal">A2 → B1</span>
+        </div>
+        <div class="t-prog-track"><div class="t-prog-fill" id="tProgFill" style="width:0%"></div></div>
+      </div>
+      <div class="t-phase p1" id="tPhase">P1</div>
+    </div>
+  </header>
+
+  <main>
+    <!-- MILESTONE -->
+    <div class="milestone" id="msBar" style="display:none">
+      <div class="ms-icon" id="msIco">🏆</div>
+      <div class="ms-body">
+        <h3 id="msTitle"></h3>
+        <p id="msMsg"></p>
+      </div>
+      <div><button class="ms-close" onclick="closeMs()">متابعة →</button></div>
+    </div>
+
+    <!-- PERFORMANCE -->
+    <div class="perf-bar" id="perfBar">
+      <div class="perf-title">أداؤك · Performance Tracker</div>
+      <div class="perf-skills" id="perfSkills"></div>
+    </div>
+
+    <!-- DAY HEADER -->
+    <div class="day-hdr">
+      <div class="day-eye" id="dayEye">Week 1 · Phase 1 · A2→B1</div>
+      <div class="day-title" id="dayTitle">Day 1: <em>Basic Tenses & American Vowels</em></div>
+      <div class="day-chips" id="dayChips"></div>
+    </div>
+
+    <!-- SKILL TABS -->
+    <div class="skill-tabs" id="skillTabs">
+      <div class="sk-tab" id="sk-grammar" style="--sk-c:var(--c-grammar);--sk-bg:rgba(96,165,250,0.08)" onclick="switchSkill('grammar')">
+        <div class="sk-ico">📐</div><div class="sk-lbl" style="color:var(--c-grammar)">Grammar</div><div class="sk-min">25 min</div>
+      </div>
+      <div class="sk-tab" id="sk-listening" style="--sk-c:var(--c-listening);--sk-bg:rgba(167,139,250,0.08)" onclick="switchSkill('listening')">
+        <div class="sk-ico">🎧</div><div class="sk-lbl" style="color:var(--c-listening)">Listening</div><div class="sk-min">35 min</div>
+      </div>
+      <div class="sk-tab" id="sk-reading" style="--sk-c:var(--c-reading);--sk-bg:rgba(52,211,153,0.08)" onclick="switchSkill('reading')">
+        <div class="sk-ico">📖</div><div class="sk-lbl" style="color:var(--c-reading)">Reading</div><div class="sk-min">30 min</div>
+      </div>
+      <div class="sk-tab" id="sk-writing" style="--sk-c:var(--c-writing);--sk-bg:rgba(251,146,60,0.08)" onclick="switchSkill('writing')">
+        <div class="sk-ico">✍️</div><div class="sk-lbl" style="color:var(--c-writing)">Writing</div><div class="sk-min">40 min</div>
+      </div>
+      <div class="sk-tab" id="sk-speaking" style="--sk-c:var(--c-speaking);--sk-bg:rgba(244,114,182,0.08)" onclick="switchSkill('speaking')">
+        <div class="sk-ico">🗣️</div><div class="sk-lbl" style="color:var(--c-speaking)">Speaking</div><div class="sk-min">30 min</div>
+      </div>
+      <div class="sk-tab" id="sk-ext" style="--sk-c:var(--c-ext);--sk-bg:rgba(251,191,36,0.08)" onclick="switchSkill('ext')">
+        <div class="sk-ico">🔗</div><div class="sk-lbl" style="color:var(--c-ext)">Apps</div><div class="sk-min">varies</div>
+      </div>
+    </div>
+
+    <!-- PANEL -->
+    <div class="panel">
+      <div class="panel-head">
+        <div class="ph-left">
+          <div class="ph-label" id="phLabel">📐 Grammar</div>
+          <div class="ph-src" id="phSrc">Grammar in Use · American English</div>
+        </div>
+        <div class="timer" id="timerEl" onclick="toggleTimer()">⏱ 25:00</div>
+      </div>
+      <div class="panel-body" id="panelBody">
+        <div class="ld"><div class="spin"></div><div class="ld-txt">generating lesson</div></div>
+      </div>
+    </div>
+
+    <button class="done-btn" id="doneBtn" onclick="markDone()">mark complete →</button>
+  </main>
+
+  <!-- VOCABULARY SECTION -->
+  <div style="max-width:980px;margin:0 auto;padding:0 16px;">
+    <div class="vocab-section" id="vocabSection">
+      <div class="vs-header">
+        <div class="vs-title">📚 Vocabulary of the Day</div>
+        <div class="vs-day" id="vsDayLbl">Day 1 · 3 words</div>
+      </div>
+      <div id="vocabContent">
+        <div class="vs-loading"><div class="spin" style="width:20px;height:20px;border-width:2px"></div>جاري تحميل مفردات اليوم...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAV EXTRA -->
+  <div class="nav-extra" style="margin-top:12px">
+    <button class="nex-btn highlight" onclick="openStats()">📊 إحصاءاتي</button>
+    <button class="nex-btn" onclick="openVbank()">📚 بنك المفردات</button>
+    <button class="nex-btn" onclick="openEval()">🎓 تقييم المرحلة</button>
+    <button class="nex-btn" onclick="openReview()">🔄 نقاط الضعف</button>
+    <button class="nex-btn" onclick="openFriday()">🌙 مراجعة الجمعة</button>
+    <button class="nex-btn" id="pteSimBtn" onclick="openPTE()" style="display:none">🎯 PTE Simulator</button>
+    <button class="nex-btn" onclick="openImport()" style="border-color:rgba(56,189,248,0.3);color:var(--accent)">📥 استيراد مرحلة</button>
+  </div>
+
+  <div class="nav-row">
+    <button class="nav-b" onclick="prevDay()">← prev</button>
+    <button class="nav-b" onclick="goToday()">today</button>
+    <button class="nav-b nx" onclick="nextDay()">next →</button>
+  </div>
+</div>
+
+<!-- ══ STATS MODAL ══ -->
+<div class="modal-overlay" id="statsModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-title">📊 لوحة إحصاءاتي</div>
+      <button class="modal-close" onclick="closeModal('statsModal')">إغلاق ×</button>
+    </div>
+    <div id="statsContent"></div>
+  </div>
+</div>
+
+<!-- ══ EVAL MODAL ══ -->
+<div class="modal-overlay" id="evalModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-title">🎓 تقييم نهاية المرحلة</div>
+      <button class="modal-close" onclick="closeModal('evalModal')">إغلاق ×</button>
+    </div>
+    <div id="evalContent"></div>
+  </div>
+</div>
+
+<!-- ══ REVIEW MODAL ══ -->
+<div class="modal-overlay" id="reviewModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-title">🔄 مراجعة نقاط الضعف</div>
+      <button class="modal-close" onclick="closeModal('reviewModal')">إغلاق ×</button>
+    </div>
+    <div id="reviewContent"></div>
+  </div>
+</div>
+
+<!-- ══ VOCAB BANK MODAL ══ -->
+<div class="modal-overlay" id="vbankModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-title">📚 بنك المفردات</div>
+      <button class="modal-close" onclick="closeModal('vbankModal')">إغلاق ×</button>
+    </div>
+    <div id="vbankContent"></div>
+  </div>
+</div>
+
+<!-- ══ IMPORT MODAL ══ -->
+<div class="modal-overlay" id="importModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-title">📥 استيراد مرحلة دراسية</div>
+      <button class="modal-close" onclick="closeModal('importModal')">إغلاق ×</button>
+    </div>
+    <div id="importContent">
+      <div style="font-family:'Tajawal',sans-serif;font-size:0.85rem;color:var(--muted2);line-height:1.7;margin-bottom:10px">
+        اطلب من Claude تصميم مرحلة دراسية جديدة، ثم الصق الـ JSON هنا مباشرةً لإضافتها للتطبيق بدون أي كود.
+      </div>
+      <button onclick="generateImportTemplate()" style="background:var(--surface2);border:1px solid var(--border);color:var(--muted2);padding:7px 14px;border-radius:7px;cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:0.68rem;margin-bottom:12px;transition:all 0.2s" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted2)'">
+        📋 توليد قالب Phase 5 كمثال
+      </button>
+      <div class="import-zone" id="importZone">
+        <div class="import-icon">📋</div>
+        <div class="import-title">الصق JSON المرحلة هنا</div>
+        <div class="import-sub">أو اكتبه يدوياً في الحقل أدناه</div>
+      </div>
+      <textarea class="import-textarea" id="importJson" placeholder='{"phase":"p5","name":"Phase 5 · Advanced","goal":"B2+ → C1","days":[245,304],"weekThemes":["..."],"sources":{"grammar":"...","listening":"...","reading":"...","writing":"...","speaking":"...","ext":{"tools":[{"name":"...","url":"...","task":"...","time":"...","icon":"...","desc":"..."}]}}}'></textarea>
+      <button class="import-btn" onclick="importPhase()">📥 استيراد المرحلة</button>
+      <div class="import-result" id="importResult"></div>
+      <div class="imported-phases" id="importedPhases"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ FRIDAY REVIEW MODAL ══ -->
+<div class="modal-overlay" id="fridayModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-title">🌙 مراجعة الجمعة</div>
+      <button class="modal-close" onclick="closeModal('fridayModal')">إغلاق ×</button>
+    </div>
+    <div id="fridayContent"></div>
+  </div>
+</div>
+
+<!-- ══ PTE SIMULATOR MODAL ══ -->
+<div class="modal-overlay" id="pteModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-title">🎯 PTE Simulator</div>
+      <button class="modal-close" onclick="closeModal('pteModal')">إغلاق ×</button>
+    </div>
+    <div id="pteContent"></div>
+  </div>
+</div>
+
+<div id="tip">
+  <div class="tip-en" id="tEn"></div>
+  <div class="tip-pr" id="tPr"></div>
+  <div class="tip-ar" id="tAr"></div>
+  <div class="tip-df" id="tDf"></div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+//  CURRICULUM — Majed's Exact Plan
+// ═══════════════════════════════════════════
+const PLAN = {
+  p1: {
+    label:'P1', cls:'p1', goal:'A2 → B1',
+    studyDays: 52, // 9 weeks × 6 days - adjustments
+    totalDays: [1,61],
+    name:'Phase 1 · Aug–Sep 2026',
+    sources: {
+      grammar: { name:'Grammar in Use · American English', units:'Units 1–45', ytSearch:'grammar in use american english شرح بالعربي' },
+      listening: { name:'VOA Learning English', url:'https://learningenglish.voanews.com', level:'Level 1 & 2 Stories' },
+      reading: { name:'ReadTheory', url:'https://readtheory.org', level:'Grade 3–6' },
+      writing: { name:'Write & Improve by Cambridge', url:'https://writeandimprove.com', level:'A2 Level' },
+      speaking: { name:'Shadowing · VOA Stories', url:'https://learningenglish.voanews.com', focus:'Connected speech & rhythm' },
+      ext: {
+        tools: [
+          { name:'ELSA Speak', url:'https://elsaspeak.com', task:'American Accent Drills', time:'20 min', icon:'🎙️', desc:'افتح ELSA، اختر "Pronunciation" ثم ابدأ بتمارين الأصوات الأمريكية المخصصة ليومك' },
+          { name:'VOA Learning English', url:'https://learningenglish.voanews.com/z/3521', task:'Daily Story + Quiz', time:'15 min', icon:'📻', desc:'اقرأ قصة اليوم واستمع إليها، ثم أجب على الأسئلة التفاعلية' }
+        ]
+      }
+    },
+    weekThemes: [
+      'Simple Present & American Vowel Sounds',
+      'Simple Past & Connected Speech Basics',
+      'Future Forms & Sentence Rhythm',
+      'Modal Verbs (can/could/will/would)',
+      'Articles (a/an/the) & Schwa Sound',
+      'Prepositions of Time & Place',
+      'Comparatives & Superlatives',
+      'Present Continuous & Stress Patterns',
+      'Present Perfect Basics & Contractions'
+    ]
+  },
+  p2: {
+    label:'P2', cls:'p2', goal:'B1 → B1+',
+    studyDays: 52,
+    totalDays: [62,122],
+    name:'Phase 2 · Oct–Nov 2026',
+    sources: {
+      grammar: { name:'Longman Academic Writing · Level 3', units:'Paragraphs to Essays', ytSearch:'longman academic writing level 3 شرح' },
+      listening: { name:'VOA Learning English + AI Tools', url:'https://learningenglish.voanews.com', level:'Level 2 & 3 + ELSA AI' },
+      reading: { name:'ReadTheory', url:'https://readtheory.org', level:'Grade 7–9' },
+      writing: { name:'Write & Improve', url:'https://writeandimprove.com', level:'B1 Level' },
+      speaking: { name:'ELSA Speak VIP', url:'https://elsaspeak.com', focus:'Flap-T · American /r/ · Speed' },
+      ext: {
+        tools: [
+          { name:'ELSA Speak VIP', url:'https://elsaspeak.com', task:'Flap-T & American /r/ Mastery', time:'30 min', icon:'🎙️', desc:'افتح ELSA → "Sounds" → ركّز على صوت /r/ الأمريكي وFlap-T حتى تحصل على تقييم أعلى من 85%' },
+          { name:'Write & Improve', url:'https://writeandimprove.com', task:'Write a Paragraph + Get Score', time:'15 min', icon:'✍️', desc:'اكتب فقرة أكاديمية عن موضوع اليوم وأدخلها في Write & Improve للحصول على تقييم CEFR فوري' }
+        ]
+      }
+    },
+    weekThemes: [
+      'Complex Sentences & Collocations',
+      'Passive Voice & Academic Vocabulary',
+      'Relative Clauses & Word Families',
+      'Conditionals (0,1,2) & Register',
+      'Reported Speech & Formal Tone',
+      'Topic Sentences & Paragraph Unity',
+      'Argument Structure & Connectors',
+      'Flap-T Mastery & Vowel Reduction',
+      'Essay Introductions & /r/ Sound'
+    ]
+  },
+  p3: {
+    label:'P3', cls:'p3', goal:'B1+ → B2',
+    studyDays: 52,
+    totalDays: [123,184],
+    name:'Phase 3 · Dec 2026–Jan 2027',
+    sources: {
+      grammar: { name:'Longman Academic Writing · Level 4', units:'Essays', ytSearch:'longman academic writing level 4 essays شرح' },
+      listening: { name:'Cambly · US Native Tutors', url:'https://cambly.com', level:'3 sessions/week' },
+      reading: { name:'ReadTheory', url:'https://readtheory.org', level:'Grade 10–12' },
+      writing: { name:'Write & Improve · B2 First', url:'https://writeandimprove.com', level:'B2 Academic' },
+      speaking: { name:'Cambly Live', url:'https://cambly.com', focus:'Fluency · No hesitation · Error correction' },
+      ext: {
+        tools: [
+          { name:'Cambly', url:'https://cambly.com', task:'Live 30-min Conversation Session', time:'30 min', icon:'💬', desc:'احجز جلسة مع معلم أمريكي، أخبره: "Focus on immediate error correction. Topic: [موضوع اليوم]"' },
+          { name:'Write & Improve', url:'https://writeandimprove.com', task:'B2 Essay — Full Draft', time:'20 min', icon:'✍️', desc:'اكتب مقالاً كاملاً (200 كلمة) وأدخله للتقييم. الهدف: الحصول على B2 Solid قبل نهاية المرحلة' }
+        ]
+      }
+    },
+    weekThemes: [
+      'Essay Body Paragraphs & Transitions',
+      'Counterargument & Cambly Session 1',
+      'Cause-Effect Essays & Oral Fluency',
+      'Discussion Essays & Speaking Flow',
+      'Academic Collocations & Natural Pace',
+      'Complex Reading — Inference Skills',
+      'Spontaneous Speaking & Filler Reduction',
+      'B2 Writing Consolidation',
+      'Oral Production & Confidence Building'
+    ]
+  },
+  p4: {
+    label:'P4', cls:'p4', goal:'B2 → PTE Academic',
+    studyDays: 44,
+    totalDays: [185,244],
+    name:'Phase 4 · Feb–Mar 2027',
+    sources: {
+      grammar: { name:'APEUni VIP · PTE Strategies', url:'https://apeuni.com', units:'Read Aloud + Templates' },
+      listening: { name:'APEUni · Repeat Sentence + WFD', url:'https://apeuni.com', level:'15 sentences/day' },
+      reading: { name:'Pearson Official PTE Practice', url:'https://pearsonpte.com', level:'Adaptive Tests' },
+      writing: { name:'APEUni · Write Essay + SWT', url:'https://apeuni.com', level:'PTE Templates' },
+      speaking: { name:'APEUni · Read Aloud + ELSA', url:'https://apeuni.com', focus:'10 items/day · Speed under pressure' },
+      ext: {
+        tools: [
+          { name:'APEUni VIP', url:'https://apeuni.com', task:'Read Aloud 10 + Repeat Sentence 15 + WFD 10', time:'45 min', icon:'🎯', desc:'افتح APEUni → Speaking → Read Aloud (10 مقاطع) + Repeat Sentence (15 جملة) + Listening → Write from Dictation (10 جمل)' },
+          { name:'Pearson PTE Practice', url:'https://pearsonpte.com/preparation/practice-tests/', task:'Full Section Mock — Timed', time:'40 min', icon:'📝', desc:'حل قسم كامل من الامتحان الرسمي تحت ضغط الوقت الحقيقي. سجّل درجتك لمتابعة تقدمك' },
+          { name:'ELSA Speak', url:'https://elsaspeak.com', task:'Fluency Drills — Speed & Clarity', time:'20 min', icon:'🎙️', desc:'تمارين سرعة النطق تحت الضغط. الهدف: الوضوح الصوتي مع السرعة الأمريكية المطلوبة في PTE' }
+        ]
+      }
+    },
+    weekThemes: [
+      'PTE Read Aloud — Rhythm & Clarity',
+      'Repeat Sentence — Ear Training',
+      'Write from Dictation — Spelling Speed',
+      'Summarize Written Text — Templates',
+      'PTE Essay — 20-min Template Mastery',
+      'Re-Tell Lecture & Describe Image',
+      'Full Mock Test Week',
+      'Winners Academy · Final Sprint'
+    ]
+  }
+};
+
+const SKILLS = ['grammar','listening','reading','writing','speaking','ext'];
+const SKILL_META = {
+  grammar:   { ico:'📐', lbl:'Grammar',   src_fn: p => PLAN[p].sources.grammar.name,   timer_fn: p => p==='p4'?2700:1500 },
+  listening: { ico:'🎧', lbl:'Listening', src_fn: p => PLAN[p].sources.listening.name, timer_fn: p => 2100 },
+  reading:   { ico:'📖', lbl:'Reading',   src_fn: p => PLAN[p].sources.reading.name,   timer_fn: p => 1800 },
+  writing:   { ico:'✍️', lbl:'Writing',   src_fn: p => PLAN[p].sources.writing.name,   timer_fn: p => 2400 },
+  speaking:  { ico:'🗣️', lbl:'Speaking',  src_fn: p => PLAN[p].sources.speaking.name,  timer_fn: p => 1800 },
+  ext:       { ico:'🔗', lbl:'Apps',      src_fn: p => 'External Tools',               timer_fn: p => 0 },
+};
+
+// ═══════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════
+let S = {
+  day: 1, skill: 'grammar',
+  done: {}, completed: [], lastMs: 0,
+  perf: { grammar:50, listening:50, reading:50, writing:50, speaking:50 },
+  scores: { grammar:[], listening:[], reading:[], writing:[], speaking:[] },
+  weakAreas: [],
+  vbank: {},
+  importedPhases: [],
+  timerSec: 1500, timerOn: false, timerRef: null,
+};
+
+function save() {
+  localStorage.setItem('ptej_v3', JSON.stringify({
+    day:S.day, done:S.done, completed:S.completed, lastMs:S.lastMs,
+    perf:S.perf, scores:S.scores, weakAreas:S.weakAreas
+  }));
+}
+function load() {
+  const d = localStorage.getItem('ptej_v3');
+  if(d) {
+    const p=JSON.parse(d); Object.assign(S,p);
+    // Restore imported phases to PLAN
+    (p.importedPhases||[]).forEach(ph => { PLAN[ph.phase] = ph; });
+  }
+}
+
+function getPhase(day) {
+  if(day<=61) return 'p1';
+  if(day<=122) return 'p2';
+  if(day<=184) return 'p3';
+  return 'p4';
+}
+function getPhaseData(day) { return PLAN[getPhase(day)]; }
+function getWeek(day) { return Math.ceil(day/7); }
+function getWeekTheme(day) {
+  const ph = getPhaseData(day);
+  const wi = Math.floor((day-1)/7) % ph.weekThemes.length;
+  return ph.weekThemes[wi];
+}
+
+// ═══════════════════════════════════════════
+//  PERFORMANCE TRACKING
+// ═══════════════════════════════════════════
+function recordScore(skill, score) {
+  if(!S.scores[skill]) S.scores[skill]=[];
+  S.scores[skill].push(score);
+  if(S.scores[skill].length>10) S.scores[skill].shift();
+  const avg = S.scores[skill].reduce((a,b)=>a+b,0)/S.scores[skill].length;
+  S.perf[skill] = Math.round(avg);
+  updateWeakAreas();
+  save();
+  renderPerf();
+}
+
+function updateWeakAreas() {
+  const skills = ['grammar','listening','reading','writing','speaking'];
+  S.weakAreas = skills.filter(sk => S.perf[sk] < 60).sort((a,b)=>S.perf[a]-S.perf[b]);
+}
+
+function renderPerf() {
+  const colors = { grammar:'var(--c-grammar)', listening:'var(--c-listening)', reading:'var(--c-reading)', writing:'var(--c-writing)', speaking:'var(--c-speaking)' };
+  const skills = ['grammar','listening','reading','writing','speaking'];
+  document.getElementById('perfSkills').innerHTML = skills.map(sk => {
+    const sc = S.perf[sk]||50;
+    const isWeak = sc < 60;
+    return `<div class="perf-skill">
+      <div class="ps-name">${sk}</div>
+      <div class="ps-bar"><div class="ps-fill" style="width:${sc}%;background:${isWeak?'var(--red)':colors[sk]}"></div></div>
+      <div class="ps-score" style="color:${isWeak?'var(--red)':colors[sk]}">${sc}%${isWeak?' ⚠':''}</div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════
+//  MILESTONES
+// ═══════════════════════════════════════════
+const MILESTONES = [
+  {at:6,ico:'⚡',t:'أسبوع كامل يا ماجد!',m:'أتممت أسبوعك الأول بنجاح. Grammar in Use و VOA بدأوا يبنيون فيك أساساً حقيقياً. واصل بنفس الوتيرة.'},
+  {at:12,ico:'🎯',t:'أسبوعان مكتملان!',m:'12 يوماً من الانضباط. أصوات الـ VOA بدأت تبدو مألوفة لأذنك. هذا بالضبط ما تريده — التكرار هو السر.'},
+  {at:18,ico:'🌟',t:'3 أسابيع — شبه شهر!',m:'ربما بعض زملائك لم يبدأوا بعد. أنت الآن في الأسبوع الثالث. الفجوة بينك وبينهم تتسع كل يوم.'},
+  {at:26,ico:'🚀',t:'شهر دراسي كامل!',m:'شهر من Grammar in Use وVOA وReadTheory. مستواك ارتفع بشكل ملموس. المرحلة الأولى في منتصفها.'},
+  {at:52,ico:'🏆',t:'المرحلة الأولى مكتملة!',m:'A2 → B1 تحققت! الآن تدخل Phase 2 مع Longman Academic وELSA Speak VIP. مستوى جديد ينتظرك يا ماجد.'},
+  {at:104,ico:'💎',t:'المرحلة الثانية مكتملة!',m:'B1+ حقيقي. Longman Level 3 أعطاك الجمل المعقدة. الآن Cambly مع native speakers في Phase 3.'},
+  {at:156,ico:'🎓',t:'المرحلة الثالثة مكتملة!',m:'B2 Solid. Write & Improve B2 First خلف ظهرك. PTE Academic ينتظرك في المرحلة الأخيرة.'},
+  {at:200,ico:'🇺🇸',t:'200 يوم دراسي!',m:'APEUni وPearson Official Practice أدواتك اليومية الآن. امتحان PTE على بُعد خطوات. أنت جاهز يا ماجد.'},
+];
+
+function checkMs(n) {
+  const m = MILESTONES.find(x=>x.at===n&&S.lastMs<n);
+  if(m){ S.lastMs=n; showMs(m); save(); }
+}
+function showMs(m) {
+  const b=document.getElementById('msBar');
+  document.getElementById('msIco').textContent=m.ico;
+  document.getElementById('msTitle').textContent=m.t;
+  document.getElementById('msMsg').textContent=m.m;
+  b.style.display='flex'; b.style.animation='fadeUp 0.4s ease';
+}
+function closeMs(){ document.getElementById('msBar').style.display='none'; }
+
+// ═══════════════════════════════════════════
+//  UI UPDATE
+// ═══════════════════════════════════════════
+function updateUI() {
+  const ph = getPhaseData(S.day);
+  const phKey = getPhase(S.day);
+  const done = S.completed.length;
+  const phaseDone = S.completed.filter(d=>{
+    const [a,b]=ph.totalDays; return d>=a&&d<=b;
+  }).length;
+  const pct = Math.round((phaseDone/ph.studyDays)*100);
+
+  document.getElementById('tDay').textContent = `day_${String(S.day).padStart(3,'0')}`;
+  document.getElementById('tProgFill').style.width = pct+'%';
+  document.getElementById('tProgLbl').textContent = `${phaseDone}/${ph.studyDays} days · ${ph.label}`;
+  document.getElementById('tGoal').textContent = ph.goal;
+  const tp = document.getElementById('tPhase');
+  tp.textContent = ph.label; tp.className = `t-phase ${ph.cls}`;
+
+  document.getElementById('dayEye').textContent = `Week ${getWeek(S.day)} · ${ph.name}`;
+  const theme = getWeekTheme(S.day);
+  document.getElementById('dayTitle').innerHTML = `Day ${S.day}: <em>${theme}</em>`;
+
+  const chips = [ph.goal, theme.split('&')[0].trim()];
+  if(S.weakAreas.length>0) chips.push(`⚠ نقطة ضعف: ${S.weakAreas[0]}`);
+  document.getElementById('dayChips').innerHTML = chips.map((c,i)=>`<div class="dchip${i===2?' weak':''}">${c}</div>`).join('');
+
+  SKILLS.forEach(sk=>{
+    const el=document.getElementById(`sk-${sk}`);
+    if(!el)return;
+    el.classList.toggle('active', sk===S.skill);
+    el.classList.toggle('done', !!S.done[`${S.day}-${sk}`]);
+    el.classList.toggle('weak-flag', S.weakAreas[0]===sk);
+  });
+
+  const meta = SKILL_META[S.skill];
+  document.getElementById('phLabel').textContent = `${meta.ico} ${meta.lbl}`;
+  document.getElementById('phSrc').textContent = meta.src_fn(phKey);
+
+  const isDone = !!S.done[`${S.day}-${S.skill}`];
+  const btn = document.getElementById('doneBtn');
+  btn.disabled = isDone;
+  btn.textContent = isDone ? '✓ completed' : 'mark complete →';
+
+  renderPerf();
+}
+
+function markDone() {
+  S.done[`${S.day}-${S.skill}`] = true;
+  const coreDone = ['grammar','listening','reading','writing','speaking'].every(sk=>S.done[`${S.day}-${sk}`]);
+  if(coreDone && !S.completed.includes(S.day)){
+    S.completed.push(S.day);
+    checkMs(S.completed.length);
+  }
+  save(); updateUI();
+  const idx=SKILLS.indexOf(S.skill);
+  if(idx<SKILLS.length-1) setTimeout(()=>switchSkill(SKILLS[idx+1]),250);
+}
+
+function switchSkill(sk) {
+  S.skill=sk; resetTimer(); updateUI(); loadContent();
+  const _ph=getPhase(S.day);
+  const _pteBtn=document.getElementById('pteSimBtn');
+  if(_pteBtn) _pteBtn.style.display=_ph==='p4'?'flex':'none';
+}
+function prevDay(){ if(S.day>1){ S.day--; switchSkill('grammar'); loadVocab(); } }
+function nextDay(){ if(S.day<244){ S.day++; switchSkill('grammar'); loadVocab(); } }
+function goToday(){
+  let t=1;
+  while(t<=244 && S.completed.includes(t)) t++;
+  S.day=t; switchSkill('grammar'); loadVocab();
+}
+
+// ═══════════════════════════════════════════
+//  TIMER
+// ═══════════════════════════════════════════
+function resetTimer(){
+  clearInterval(S.timerRef); S.timerOn=false;
+  const ph=getPhase(S.day);
+  S.timerSec = S.skill==='ext' ? 0 : (SKILL_META[S.skill]?.timer_fn(ph)||1500);
+  if(S.timerSec===0){ document.getElementById('timerEl').textContent='⏱ —'; return; }
+  renderTimer();
+  document.getElementById('timerEl').classList.remove('run');
+}
+function toggleTimer(){
+  if(S.timerSec===0)return;
+  if(S.timerOn){ clearInterval(S.timerRef); S.timerOn=false; document.getElementById('timerEl').classList.remove('run'); }
+  else {
+    S.timerOn=true; document.getElementById('timerEl').classList.add('run');
+    S.timerRef=setInterval(()=>{
+      S.timerSec--;
+      if(S.timerSec<=0){ clearInterval(S.timerRef); S.timerOn=false; document.getElementById('timerEl').textContent='⏰ Done!'; document.getElementById('doneBtn').disabled=false; }
+      else renderTimer();
+    },1000);
+  }
+}
+function renderTimer(){
+  const m=String(Math.floor(S.timerSec/60)).padStart(2,'0');
+  const s=String(S.timerSec%60).padStart(2,'0');
+  document.getElementById('timerEl').textContent=`⏱ ${m}:${s}`;
+}
+
+// ═══════════════════════════════════════════
+//  TOOLTIP
+// ═══════════════════════════════════════════
+document.addEventListener('mouseup', async e=>{
+  const sel=window.getSelection()?.toString().trim();
+  if(!sel||sel.length>45){hideTip();return;}
+  const w=sel.replace(/[^a-zA-Z ]/g,'').trim().toLowerCase();
+  if(!w){hideTip();return;}
+  showTip(w,'','جاري...','',e.clientX,e.clientY);
+  try{
+    const r=await api(`Translate to Arabic with IPA. JSON only: {"ar":"Arabic","pron":"IPA","def":"English def max 8 words"}. Word: "${w}"`);
+    const d=JSON.parse(r.replace(/```json|```/g,'').trim());
+    showTip(w,d.pron||'',d.ar||'—',d.def||'',e.clientX,e.clientY);
+  }catch(e){}
+});
+document.addEventListener('mousedown',e=>{if(!e.target.closest('#tip'))hideTip();});
+function showTip(en,pr,ar,df,x,y){
+  const t=document.getElementById('tip');
+  document.getElementById('tEn').textContent=en;
+  document.getElementById('tPr').textContent=pr;
+  document.getElementById('tAr').textContent=ar;
+  document.getElementById('tDf').textContent=df;
+  t.style.display='block';
+  t.style.left=Math.min(x+10,window.innerWidth-220)+'px';
+  t.style.top=(y-10)+'px';
+}
+function hideTip(){ document.getElementById('tip').style.display='none'; }
+
+// ═══════════════════════════════════════════
+//  API
+// ═══════════════════════════════════════════
+async function api(prompt, sys='Reply in valid JSON only — no markdown, no backticks.') {
+  const key = window._apiKey || localStorage.getItem('ptej_apikey') || '';
+  if(!key) { showAPIKeySetup(); throw new Error('No API key'); }
+  const headers = {'Content-Type':'application/json'};
+  if(key) headers['x-api-key'] = key;
+  headers['anthropic-version'] = '2023-06-01';
+  headers['anthropic-dangerous-direct-browser-access'] = 'true';
+  const r=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST', headers,
+    body:JSON.stringify({ model:'claude-sonnet-4-6', max_tokens:1000, system:sys, messages:[{role:'user',content:prompt}] })
+  });
+  if(!r.ok) {
+    const err = await r.json().catch(()=>({}));
+    if(r.status===401) { showAPIKeySetup(); throw new Error('Invalid API key'); }
+    throw new Error(err.error?.message || 'API error '+r.status);
+  }
+  const d=await r.json();
+  return d.content?.[0]?.text||'';
+}
+async function apiHTML(prompt, sys='Reply in clear HTML. Use <h3>,<ul>,<li>,<strong> tags. Be concise.') {
+  const key = window._apiKey || localStorage.getItem('ptej_apikey') || '';
+  if(!key) { showAPIKeySetup(); throw new Error('No API key'); }
+  const headers = {'Content-Type':'application/json'};
+  if(key) headers['x-api-key'] = key;
+  headers['anthropic-version'] = '2023-06-01';
+  headers['anthropic-dangerous-direct-browser-access'] = 'true';
+  const r=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST', headers,
+    body:JSON.stringify({ model:'claude-sonnet-4-6', max_tokens:1000, system:sys, messages:[{role:'user',content:prompt}] })
+  });
+  if(!r.ok) {
+    if(r.status===401) { showAPIKeySetup(); throw new Error('Invalid API key'); }
+    throw new Error('API error '+r.status);
+  }
+  const d=await r.json();
+  return d.content?.[0]?.text||'';
+}
+
+// ═══════════════════════════════════════════
+//  CONTENT LOADERS
+// ═══════════════════════════════════════════
+async function loadContent(){
+  const body=document.getElementById('panelBody');
+  body.innerHTML=`<div class="ld"><div class="spin"></div><div class="ld-txt">generating lesson</div></div>`;
+  const ph=getPhase(S.day); const phData=PLAN[ph];
+  const theme=getWeekTheme(S.day);
+  const weak=S.weakAreas.length>0?`Student weak areas: ${S.weakAreas.join(', ')}. Reinforce these subtly.`:'';
+  try{
+    if(S.skill==='grammar')   await loadGrammar(ph,phData,theme,weak,body);
+    if(S.skill==='listening') await loadListening(ph,phData,theme,weak,body);
+    if(S.skill==='reading')   await loadReading(ph,phData,theme,weak,body);
+    if(S.skill==='writing')   await loadWriting(ph,phData,theme,weak,body);
+    if(S.skill==='speaking')  await loadSpeaking(ph,phData,theme,weak,body);
+    if(S.skill==='ext')       loadExt(phData,theme,body);
+  }catch(e){
+    body.innerHTML=`<div class="ld"><div style="color:var(--red)">⚠ خطأ في الاتصال. أعد المحاولة.</div></div>`;
+  }
+}
+
+// ── GRAMMAR ──────────────────────────────
+async function loadGrammar(ph,phData,theme,weak,body){
+  const src=phData.sources.grammar;
+  const unitData = getGrammarUnit(S.day);
+  const unitRef = unitData
+    ? `Unit ${unitData.unit}: "${unitData.title}" (${unitData.title_ar}) — Topic: ${unitData.topic} — Level: ${unitData.level}`
+    : `Week theme: ${theme}`;
+
+  const raw=await api(`Day ${S.day}. Phase: ${ph}. Level: ${phData.goal}.
+Source: ${src.name}. ${unitRef}. ${weak}
+
+Generate a complete grammar lesson for this EXACT unit. Explain IN ARABIC (شرح بالعربي). JSON:
+{
+  "unit": "${unitData ? unitData.title : theme}",
+  "unit_num": "${unitData ? unitData.unit : ''}",
+  "unit_ar": "${unitData ? unitData.title_ar : theme}",
+  "level_tag": "${unitData ? unitData.level : phData.goal}",
+  "rule_ar": "شرح القاعدة بالعربي بشكل مبسط وواضح في 3-4 جمل — اشرح متى وكيف نستخدم هذه القاعدة",
+  "formula": "Formula: Subject + ... (show the exact structure)",
+  "sub_rules": [
+    { "case_ar": "حالة أو استخدام محدد", "formula": "formula for this case", "example_en": "example", "example_ar": "ترجمة" }
+  ],
+  "examples": [
+    { "en": "English sentence", "ar": "الترجمة العربية", "note_ar": "ملاحظة قصيرة بالعربي" }
+  ],
+  "common_mistake_ar": "الخطأ الأكثر شيوعاً عند الطلاب العرب في هذه القاعدة تحديداً مع مثال على الخطأ والصواب",
+  "american_tip": "specific American English usage note for this grammar point",
+  "yt_query": "استعلام بحث يوتيوب بالعربي لشرح هذه القاعدة",
+  "exercise": {
+    "instruction_ar": "تعليمات التمرين بالعربي",
+    "items": [
+      { "prompt": "complete sentence with ___ blank", "answer": "correct answer", "distractor": "common wrong answer", "explain_ar": "لماذا الإجابة الصحيحة هي كذلك" }
+    ]
+  }
+}
+sub_rules: 2-3 items covering different use cases of this unit.
+examples: 4 items — varied and realistic.
+exercise items: 5. Make every example and exercise directly related to Unit ${unitData ? unitData.unit : ''}: ${unitData ? unitData.title : theme}.`);
+
+  const d=JSON.parse(raw.replace(/```json|```/g,'').trim());
+  const ytUrl=`https://www.youtube.com/results?search_query=${encodeURIComponent(d.yt_query||src.ytSearch)}`;
+
+  body.innerHTML=`
+    <div style="margin-bottom:14px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
+        <div class="slbl" style="margin:0">📐 ${src.name}</div>
+        ${d.unit_num ? `<div style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;background:rgba(96,165,250,0.1);border:1px solid rgba(96,165,250,0.25);color:var(--c-grammar);padding:2px 8px;border-radius:4px">Unit ${d.unit_num}</div>` : ''}
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:0.62rem;background:var(--surface2);border:1px solid var(--border);color:var(--muted);padding:2px 8px;border-radius:4px">${d.level_tag||phData.goal}</div>
+      </div>
+      <div style="font-size:1.05rem;font-weight:700;color:#fff;margin-bottom:4px">${d.unit}</div>
+      <div style="font-family:'Tajawal',sans-serif;font-size:0.9rem;color:var(--muted2)">${d.unit_ar}</div>
+    </div>
+
+    <div class="rule-box">
+      <div class="rule-tag">القاعدة — The Rule</div>
+      <div class="rule-ar">${d.rule_ar}</div>
+      <div class="rule-formula">${d.formula}</div>
+    </div>
+
+    ${d.sub_rules && d.sub_rules.length ? `
+    <div style="margin-bottom:14px">
+      <div class="slbl">حالات الاستخدام — Use Cases</div>
+      ${d.sub_rules.map(sr=>`
+        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 13px;margin-bottom:7px;display:grid;gap:4px">
+          <div style="font-family:'Tajawal',sans-serif;font-size:0.8rem;color:var(--gold)">${sr.case_ar}</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--accent);background:var(--bg);padding:4px 8px;border-radius:4px">${sr.formula}</div>
+          <div style="font-size:0.8rem;color:var(--text);font-style:italic">"${sr.example_en}"</div>
+          <div style="font-family:'Tajawal',sans-serif;font-size:0.75rem;color:var(--muted2)">${sr.example_ar}</div>
+        </div>`).join('')}
+    </div>` : ''}
+
+    <div style="background:rgba(248,113,113,0.05);border:1px solid rgba(248,113,113,0.18);border-radius:7px;padding:9px 13px;margin-bottom:12px;font-family:'Tajawal',sans-serif;font-size:0.82rem;color:var(--red)">
+      ⚠ <strong>خطأ شائع:</strong> ${d.common_mistake_ar}
+    </div>
+
+    <div class="slbl">الأمثلة — Examples</div>
+    ${d.examples.map(ex=>`
+      <div class="ex-card">
+        <div class="ex-en">${ex.en}</div>
+        <div class="ex-ar">${ex.ar}</div>
+        <div class="ex-note">${ex.note_ar}</div>
+      </div>`).join('')}
+
+    <div style="background:rgba(56,189,248,0.05);border:1px solid rgba(56,189,248,0.18);border-radius:7px;padding:9px 13px;margin:12px 0;font-size:0.75rem;color:var(--accent);font-family:'IBM Plex Mono',monospace">
+      🇺🇸 American English: ${d.american_tip}
+    </div>
+
+    <div class="yt-link-box">
+      <span style="font-size:1.2rem">▶️</span>
+      <div>
+        <div style="font-size:0.7rem;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-bottom:2px">شرح بالعربي على يوتيوب</div>
+        <a href="${ytUrl}" target="_blank">🔍 ابحث: ${d.yt_query||src.ytSearch}</a>
+      </div>
+    </div>
+
+    <div class="slbl" style="margin-top:16px">تمرين — Practice · ${d.exercise.instruction_ar}</div>
+    ${d.exercise.items.map((it,i)=>`
+      <div class="cq" id="gq${i}">
+        <div class="cq-q">${i+1}. ${it.prompt}</div>
+        <div class="cq-opts">
+          ${shuffle([it.answer,it.distractor]).map(opt=>`<button class="cq-opt" onclick="checkGQ(${i},'${esc(opt)}','${esc(it.answer)}','${esc(it.explain_ar||'')}')">${opt}</button>`).join('')}
+        </div>
+      </div>`).join('')}`;
+}
+window.checkGQ=(i,sel,ans,explain)=>{
+  const q=document.getElementById(`gq${i}`);
+  const btns=q.querySelectorAll('.cq-opt');
+  btns.forEach(b=>{b.disabled=true; if(b.textContent===ans)b.classList.add('correct'); else if(b.textContent===sel)b.classList.add('wrong');});
+  if(explain){
+    const expDiv=document.createElement('div');
+    expDiv.style.cssText='margin-top:6px;font-family:Tajawal,sans-serif;font-size:0.75rem;color:var(--muted2);background:var(--bg);padding:6px 10px;border-radius:5px';
+    expDiv.textContent='💡 '+explain;
+    q.appendChild(expDiv);
+  }
+  const score=sel===ans?100:30;
+  recordScore('grammar',score);
+};
+
+// ── LISTENING ─────────────────────────────
+async function loadListening(ph,phData,theme,weak,body){
+  const src=phData.sources.listening;
+  const raw=await api(`Day ${S.day}. Phase: ${ph}. Level: ${phData.goal}. Source: ${src.name}. Level: ${src.level}. Theme: "${theme}". ${weak}
+
+Generate listening lesson JSON:
+{
+  "resource": {
+    "title": "real or realistic resource title",
+    "channel": "${src.name}",
+    "emoji": "relevant emoji",
+    "duration": "e.g. 5:14",
+    "url": "real URL from ${src.url} relevant to theme, or null",
+    "description": "one sentence in Arabic about why this is useful",
+    "level": "${phData.goal}"
+  },
+  "transcript": "8 natural spoken English sentences from this type of resource. Include connected speech.",
+  "shadowing_focus": "specific feature: linking/reduction/flap-T/rhythm etc",
+  "fill_blanks": [
+    { "before": "text before", "answer": "missing word", "after": "text after", "why_ar": "لماذا هذه الكلمة مهمة" }
+  ],
+  "key_phrases": [
+    { "phrase": "phrase", "ar": "Arabic", "usage": "usage note" }
+  ]
+}
+fill_blanks: 3. key_phrases: 4.`);
+
+  const d=JSON.parse(raw.replace(/```json|```/g,'').trim());
+  const urlHtml=d.resource.url
+    ?`<a class="ac-url" href="${d.resource.url}" target="_blank">▶ افتح الرابط الأصلي</a>`
+    :`<span style="font-size:0.68rem;color:var(--muted);font-family:'IBM Plex Mono',monospace">▶ اقرأ النص أدناه</span>`;
+
+  body.innerHTML=`
+    <div class="audio-card">
+      <div class="ac-top">
+        <div class="ac-thumb">${d.resource.emoji}</div>
+        <div class="ac-info">
+          <h4>${d.resource.title}</h4>
+          <p>${d.resource.channel} · ${d.resource.duration} · ${d.resource.level}</p>
+          <p style="font-family:'Tajawal',sans-serif;font-size:0.72rem;color:var(--muted2);margin-top:3px">${d.resource.description}</p>
+          ${urlHtml}
+        </div>
+      </div>
+      <div class="player">
+        <div class="pl-bar"><div class="pl-prog" id="plProg"></div></div>
+        <div class="pl-ctrl">
+          <button class="pl-play" onclick="plToggle(this)">▶</button>
+          <span class="pl-time" id="plTime">0:00 / ${d.resource.duration}</span>
+          <button class="pl-spd" onclick="plSpd(this)">1×</button>
+        </div>
+      </div>
+      <button class="show-tr" onclick="showTr(this)">عرض النص المكتوب</button>
+      <div class="transcript" id="trBox">${d.transcript}</div>
+    </div>
+
+    <div style="background:rgba(167,139,250,0.05);border:1px solid rgba(167,139,250,0.18);border-radius:9px;padding:12px 14px;margin-bottom:14px">
+      <div class="slbl" style="color:var(--purple)">🔁 تمرين Shadowing · ${d.shadowing_focus}</div>
+      <div style="font-family:'Tajawal',sans-serif;font-size:0.82rem;color:var(--muted2);line-height:1.7">
+        <b style="color:var(--text)">الخطوة 1:</b> استمع للنص بدون قراءة — امتص الإيقاع والنبرة.<br>
+        <b style="color:var(--text)">الخطوة 2:</b> اقرأ النص وحدّد أمثلة "${d.shadowing_focus}".<br>
+        <b style="color:var(--text)">الخطوة 3:</b> تحدث بالتزامن مع النص — ركّز على <em>${d.shadowing_focus}</em>.<br>
+        <b style="color:var(--text)">الخطوة 4:</b> سجّل نفسك 60 ثانية وقارن بالأصل.
+      </div>
+    </div>
+
+    <div class="task-box">
+      <div class="task-lbl">أكمل الفراغات</div>
+      ${d.fill_blanks.map((fb,i)=>`
+        <div class="fill-row">
+          <span>"...${fb.before}</span>
+          <input type="text" id="fb${i}" placeholder="?" />
+          <span>${fb.after}..."</span>
+        </div>
+        <div style="font-size:0.65rem;color:var(--muted);font-family:'Tajawal',sans-serif;margin-bottom:8px">💡 ${fb.why_ar}</div>`).join('')}
+      <button class="chk-btn" onclick="checkFill(${JSON.stringify(d.fill_blanks).replace(/"/g,'&quot;')})">تحقق من الإجابات</button>
+    </div>
+
+    <div class="slbl" style="margin-top:16px">عبارات مفتاحية</div>
+    ${d.key_phrases.map(p=>`<div class="ph-row"><span class="ph-en">${p.phrase}</span><span class="ph-ar">${p.ar}</span><span class="ph-note">${p.usage}</span></div>`).join('')}`;
+  // Add pronunciation track
+  await addPronTrack(theme, body);
+}
+
+let _pi=null,_pe=0;
+window.plToggle=btn=>{if(_pi){clearInterval(_pi);_pi=null;btn.textContent='▶';}else{btn.textContent='⏸';_pi=setInterval(()=>{_pe++;const pp=document.getElementById('plProg');if(pp)pp.style.width=Math.min((_pe/480)*100,100)+'%';},1000);}};
+window.showTr=btn=>{const t=document.getElementById('trBox');const s=t.style.display==='none'||!t.style.display;t.style.display=s?'block':'none';btn.textContent=s?'إخفاء النص':'عرض النص المكتوب';};
+let _si=0;window.plSpd=btn=>{const s=['1×','1.25×','1.5×','0.75×'];_si=(_si+1)%4;btn.textContent=s[_si];};
+window.checkFill=blanks=>{
+  let correct=0;
+  blanks.forEach((fb,i)=>{const inp=document.getElementById(`fb${i}`);if(!inp)return;const ok=inp.value.trim().toLowerCase()===fb.answer.toLowerCase();inp.classList.toggle('ok',ok);inp.classList.toggle('no',!ok);if(!ok)inp.title=`الإجابة: ${fb.answer}`;if(ok)correct++;});
+  recordScore('listening',Math.round((correct/blanks.length)*100));
+};
+
+// ── READING ───────────────────────────────
+async function loadReading(ph,phData,theme,weak,body){
+  const src=phData.sources.reading;
+  const raw=await api(`Day ${S.day}. Phase: ${ph}. Level: ${phData.goal}. Source: ${src.name} ${src.level}. Theme: "${theme}". ${weak}
+
+Generate reading lesson JSON:
+{
+  "source_url": "${src.url}",
+  "passage_title": "title",
+  "strategy_ar": "استراتيجية قراءة بالعربي مناسبة لهذا النص",
+  "passage": "3 paragraphs. Level: ${phData.goal}. Academic/informational. Real vocabulary.",
+  "vocab": [
+    { "word": "word from passage", "ar": "Arabic", "pron": "/IPA/", "def": "English def" }
+  ],
+  "questions": [
+    { "q": "comprehension question", "opts": ["A...","B...","C...","D..."], "ans": 0, "explain_ar": "شرح الإجابة الصحيحة بالعربي" }
+  ]
+}
+vocab: 5. questions: 3. ans is 0-indexed.`);
+
+  const d=JSON.parse(raw.replace(/```json|```/g,'').trim());
+  const vMap={}; d.vocab.forEach(v=>{vMap[v.word.toLowerCase()]=v;});
+
+  let passHtml=d.passage.split('\n').filter(p=>p.trim()).map(para=>{
+    let p=para;
+    d.vocab.forEach(v=>{const re=new RegExp(`\\b(${v.word})\\b`,'gi');p=p.replace(re,`<span class="vw" data-w="${v.word.toLowerCase()}">$1</span>`);});
+    return `<p>${p}</p>`;
+  }).join('');
+
+  body.innerHTML=`
+    <div class="read-tools">
+      <button class="rtool" onclick="togVocab(this)">vocab list</button>
+      <button class="rtool" onclick="adjF(-1)">A−</button>
+      <button class="rtool" onclick="adjF(1)">A+</button>
+    </div>
+    <div class="src-badge">📚 <a href="${d.source_url}" target="_blank">${src.name}</a> · ${src.level}</div>
+    <div class="strategy-tip">💡 استراتيجية: ${d.strategy_ar}</div>
+    <div class="read-text" id="rText" style="font-size:0.92rem">${passHtml}</div>
+    <div id="vocabPane" style="display:none;margin-top:14px;border-top:1px solid var(--border);padding-top:12px">
+      <div class="slbl">المفردات</div>
+      <div class="vocab-grid">${d.vocab.map(v=>`<div class="vc"><div class="vc-en">${v.word}</div><div class="vc-pron">${v.pron}</div><div class="vc-ar">${v.ar}</div><div class="vc-def">${v.def}</div></div>`).join('')}</div>
+    </div>
+    <div style="margin-top:18px;border-top:1px solid var(--border);padding-top:14px">
+      <div class="slbl">أسئلة الفهم</div>
+      ${d.questions.map((q,qi)=>`
+        <div class="cq" id="rq${qi}">
+          <div class="cq-q">${qi+1}. ${q.q}</div>
+          <div class="cq-opts">${q.opts.map((o,oi)=>`<button class="cq-opt" onclick="checkRQ(${qi},${oi},${q.ans},'${esc(q.explain_ar)}')">${o}</button>`).join('')}</div>
+          <div id="rexp${qi}" style="display:none;margin-top:8px;font-family:'Tajawal',sans-serif;font-size:0.78rem;color:var(--muted2);background:var(--bg);border-radius:5px;padding:7px 10px"></div>
+        </div>`).join('')}
+    </div>`;
+
+  document.querySelectorAll('.vw').forEach(el=>{
+    el.addEventListener('mouseenter',e=>{const v=vMap[el.dataset.w];if(v)showTip(v.word,v.pron,v.ar,v.def,e.clientX,e.clientY);});
+    el.addEventListener('mouseleave',hideTip);
+  });
+}
+window.togVocab=btn=>{const p=document.getElementById('vocabPane');const s=p.style.display==='none';p.style.display=s?'block':'none';btn.classList.toggle('on',s);};
+window.adjF=d=>{const el=document.getElementById('rText');if(el)el.style.fontSize=(parseFloat(el.style.fontSize||0.92)+d*0.05)+'rem';};
+window.checkRQ=(qi,sel,ans,exp)=>{
+  const q=document.getElementById(`rq${qi}`);
+  q.querySelectorAll('.cq-opt').forEach((b,i)=>{b.disabled=true;if(i===ans)b.classList.add('correct');else if(i===sel)b.classList.add('wrong');});
+  const expEl=document.getElementById(`rexp${qi}`); if(expEl){expEl.style.display='block';expEl.textContent=exp;}
+  recordScore('reading',sel===ans?100:20);
+};
+
+// ── WRITING ───────────────────────────────
+async function loadWriting(ph,phData,theme,weak,body){
+  const src=phData.sources.writing;
+  const raw=await api(`Day ${S.day}. Phase: ${ph}. Level: ${phData.goal}. Source: ${src.name} ${src.level}. Theme: "${theme}". ${weak}
+
+Generate writing task JSON:
+{
+  "task_type": "sentence|paragraph|essay|pte_essay|summary",
+  "title": "task title",
+  "scenario_ar": "السياق بالعربي في جملة أو اثنتين",
+  "instruction": "exact writing instruction in English",
+  "structure": [{ "label": "section", "hint_ar": "ما تكتبه بالعربي" }],
+  "phrases": ["useful phrase 1","phrase 2","phrase 3","phrase 4"],
+  "model_opening": "first sentence example",
+  "word_target": 80,
+  "wi_url": "${src.url}"
+}
+structure: 3-4 items.`);
+
+  const d=JSON.parse(raw.replace(/```json|```/g,'').trim());
+
+  body.innerHTML=`
+    <div class="w-prompt">
+      <div class="w-prompt-lbl">✍️ ${d.title} · ${d.task_type.replace(/_/g,' ').toUpperCase()}</div>
+      <div style="font-family:'Tajawal',sans-serif;font-size:0.85rem;color:var(--muted2);margin-bottom:6px">${d.scenario_ar}</div>
+      <div style="font-size:0.85rem;color:var(--text)">${d.instruction}</div>
+    </div>
+    <div class="w-struct">${d.structure.map(s=>`<div class="wchip"><strong>${s.label}</strong><span>${s.hint_ar}</span></div>`).join('')}</div>
+    <div style="font-size:0.65rem;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-bottom:5px">عبارات مفيدة — اضغط لإدراجها</div>
+    <div class="w-phrases">${d.phrases.map(p=>`<div class="wph" onclick="insW('${esc(p)}')">${p}</div>`).join('')}</div>
+    <div style="border-left:2px solid var(--c-writing);padding-left:8px;font-size:0.68rem;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-bottom:10px">model: "${d.model_opening}"</div>
+    <textarea class="editor" id="wed" placeholder="Start writing here..." oninput="updWC(this,${d.word_target})"></textarea>
+    <div class="w-foot">
+      <div class="wcount" id="wc">0 / ${d.word_target} words</div>
+      <button class="ai-btn" id="waib" onclick="checkW(${d.word_target})">تقييم بالذكاء الاصطناعي →</button>
+    </div>
+    <div style="margin-top:10px;font-size:0.7rem;color:var(--muted);text-align:center">
+      <a href="${d.wi_url}" target="_blank" style="color:var(--accent);font-family:'IBM Plex Mono',monospace;font-size:0.68rem">أو أدخل نصك مباشرة في ${src.name} ↗</a>
+    </div>
+    <div class="fb-box" id="wfb"></div>`;
+}
+window.updWC=(ta,t)=>{const n=ta.value.trim().split(/\s+/).filter(w=>w).length;document.getElementById('wc').textContent=`${n} / ${t} words`;};
+window.insW=p=>{const ta=document.getElementById('wed');if(!ta)return;ta.value=ta.value.substring(0,ta.selectionStart)+p+' '+ta.value.substring(ta.selectionStart);};
+window.checkW=async(t)=>{
+  const text=document.getElementById('wed')?.value?.trim();
+  if(!text||text.length<15){alert('اكتب على الأقل جملة أو اثنتين أولاً.');return;}
+  const btn=document.getElementById('waib'); btn.disabled=true; btn.textContent='جاري التقييم...';
+  const fb=document.getElementById('wfb'); fb.style.display='block';
+  fb.innerHTML='<div class="ld" style="padding:14px"><div class="spin"></div></div>';
+  const ph=getPhase(S.day); const phData=PLAN[ph];
+  try{
+    const r=await apiHTML(`Level: ${phData.goal}. Target: ${t} words. Writing:\n"${text}"\n\nFeedback (mix Arabic and English): 1) Score /10 + سبب بالعربي 2) Grammar errors max 3 3) Vocabulary suggestions 4) Improved version of one sentence. Encouraging tone.`);
+    fb.innerHTML=`<h4>تقييم الذكاء الاصطناعي</h4><div class="ai-res">${r}</div>`;
+    const scoreMatch=r.match(/(\d+)\s*\/\s*10/); const sc=scoreMatch?parseInt(scoreMatch[1])*10:60;
+    recordScore('writing',sc);
+  }catch(e){fb.innerHTML='<div style="color:var(--red)">خطأ في الاتصال</div>';}
+  btn.disabled=false; btn.textContent='تقييم بالذكاء الاصطناعي →';
+};
+
+// ── SPEAKING ──────────────────────────────
+async function loadSpeaking(ph,phData,theme,weak,body){
+  const src=phData.sources.speaking;
+  const raw=await api(`Day ${S.day}. Phase: ${ph}. Level: ${phData.goal}. Source: ${src.name}. Focus: ${src.focus}. Theme: "${theme}". ${weak}
+
+Generate speaking practice JSON:
+{
+  "partner": "tutor|colleague|examiner|patient|teacher",
+  "name": "American first name",
+  "emoji": "emoji",
+  "scenario": "scenario title",
+  "context_ar": "السياق بالعربي جملة أو اثنتين",
+  "dialogue": [
+    { "role": "partner|student", "text": "dialogue line", "coach_ar": "نصيحة للطالب بالعربي — for student lines only" }
+  ],
+  "your_turn": "what to respond to now",
+  "model_answer": "ideal student response",
+  "pron_tip_ar": "نصيحة نطق أمريكية بالعربي",
+  "pte_link": "how this maps to a PTE Speaking task",
+  "mistakes_ar": ["خطأ شائع 1 للمتحدثين العرب","خطأ شائع 2"]
+}
+dialogue: 6 exchanges. Level: ${phData.goal}.`);
+
+  const d=JSON.parse(raw.replace(/```json|```/g,'').trim());
+  const dlg=d.dialogue.map(line=>{
+    if(line.role==='student')return`<div class="bub me"><div style="font-size:0.6rem;color:var(--accent);margin-bottom:3px;font-family:'IBM Plex Mono',monospace">أنت</div>${line.text}${line.coach_ar?`<div class="coach">💡 ${line.coach_ar}</div>`:''}</div>`;
+    return`<div class="bub other"><div class="bname">${d.emoji} ${d.name}</div>${line.text}</div>`;
+  }).join('');
+
+  body.innerHTML=`
+    <div class="sp-head">
+      <div class="sp-av">${d.emoji}</div>
+      <div class="sp-info"><h4>${d.name} · ${d.partner}</h4><p>${d.scenario}</p></div>
+    </div>
+    <div class="sp-ctx"><strong>📍 السياق:</strong> ${d.context_ar}</div>
+    <div class="bubbles">${dlg}</div>
+    <div class="bub prompt-b">🎯 دورك الآن: ${d.your_turn}</div>
+    <textarea class="sp-input" id="spin" placeholder="اكتب ردّك بالإنجليزية هنا..."></textarea>
+    <div class="sp-ctrl">
+      <button class="sp-btn" onclick="analyzeSpeak()">تحليل إجابتي →</button>
+      <button class="sp-sec" onclick="showModel('${esc(d.model_answer)}')">نموذج الإجابة</button>
+    </div>
+    <div class="fb-box" id="spfb"></div>
+    <div style="background:rgba(251,191,36,0.05);border:1px solid rgba(251,191,36,0.18);border-radius:8px;padding:12px 14px;margin-top:12px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;color:var(--gold);margin-bottom:6px;text-transform:uppercase">🔊 نصيحة النطق الأمريكي</div>
+      <div style="font-family:'Tajawal',sans-serif;font-size:0.82rem;line-height:1.65">${d.pron_tip_ar}</div>
+    </div>
+    <div class="pte-tip">🎯 PTE Link: ${d.pte_link}</div>
+    <div style="background:var(--surface2);border-radius:8px;padding:12px 14px;margin-top:10px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;color:var(--red);margin-bottom:6px;text-transform:uppercase">⚠ أخطاء شائعة للمتحدثين العرب</div>
+      ${d.mistakes_ar.map(m=>`<div style="font-family:'Tajawal',sans-serif;font-size:0.8rem;color:var(--muted2);margin-bottom:5px">• ${m}</div>`).join('')}
+    </div>`;
+}
+window.showModel=m=>{const fb=document.getElementById('spfb');fb.style.display='block';fb.innerHTML=`<h4>نموذج الإجابة</h4><div style="font-size:0.85rem;line-height:1.8">"${m}"</div>`;};
+window.analyzeSpeak=async()=>{
+  const text=document.getElementById('spin')?.value?.trim();
+  if(!text||text.length<5){alert('اكتب ردّك أولاً.');return;}
+  const fb=document.getElementById('spfb'); fb.style.display='block';
+  fb.innerHTML='<div class="ld" style="padding:14px"><div class="spin"></div></div>';
+  const ph=getPhase(S.day); const phData=PLAN[ph];
+  try{
+    const r=await apiHTML(`Level: ${phData.goal}. Speaking response: "${text}"\nFeedback (mix Arabic/English): 1) Fluency /10 2) Grammar 3) Vocabulary 4) One improved version. Encouraging.`);
+    fb.innerHTML=`<h4>تحليل إجابتك</h4><div class="ai-res">${r}</div>`;
+    const sm=r.match(/(\d+)\s*\/\s*10/); const sc=sm?parseInt(sm[1])*10:60;
+    recordScore('speaking',sc);
+  }catch(e){fb.innerHTML='<div style="color:var(--red)">خطأ في الاتصال</div>';}
+};
+
+// ── EXT TOOLS ─────────────────────────────
+function loadExt(phData,theme,body){
+  const tools=phData.sources.ext.tools;
+  body.innerHTML=`
+    <div class="slbl">🔗 التطبيقات المدفوعة · جلسة اليوم</div>
+    <div style="font-family:'Tajawal',sans-serif;font-size:0.85rem;color:var(--muted2);margin-bottom:16px;line-height:1.65">
+      موضوع اليوم: <strong style="color:var(--text)">${theme}</strong><br>
+      طبّق هذه التطبيقات بعد إنهاء الأقسام الأساسية أعلاه.
+    </div>
+    ${tools.map(t=>`
+      <div class="ext-tool">
+        <div class="et-head">
+          <span style="font-size:1.4rem">${t.icon}</span>
+          <span class="et-badge">${t.time}</span>
+          <span class="et-title">${t.name}</span>
+        </div>
+        <div class="et-task" style="font-family:'Tajawal',sans-serif"><strong style="color:var(--text)">المهمة:</strong> ${t.desc}</div>
+        <div style="font-family:'Tajawal',sans-serif;font-size:0.75rem;color:var(--muted2);margin-bottom:8px">موضوع اليوم داخل التطبيق: <strong style="color:var(--gold)">${theme}</strong></div>
+        <a class="et-link" href="${t.url}" target="_blank">افتح ${t.name} ↗</a>
+        <div class="et-time">⏱ ${t.time} مخصصة لهذا التطبيق اليوم</div>
+      </div>`).join('')}
+    <div style="background:var(--surface2);border-radius:9px;padding:14px;margin-top:14px">
+      <div class="slbl" style="color:var(--green)">✓ بعد الانتهاء</div>
+      <div style="font-family:'Tajawal',sans-serif;font-size:0.82rem;color:var(--muted2);line-height:1.65">
+        سجّل درجتك أو ملاحظاتك من التطبيق هنا للمتابعة في الجلسة القادمة:
+      </div>
+      <textarea style="width:100%;min-height:60px;background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:10px;color:var(--text);font-family:'Tajawal',sans-serif;font-size:0.82rem;outline:none;margin-top:8px;resize:none" placeholder="مثال: ELSA أعطاني 78% في الـ /r/ sound — أحتاج تكرار..."></textarea>
+    </div>`;
+}
+
+// ═══════════════════════════════════════════
+//  VOCABULARY OF THE DAY
+// ═══════════════════════════════════════════
+async function loadVocab() {
+  const ph = getPhase(S.day);
+  const phData = PLAN[ph];
+  const theme = getWeekTheme(S.day);
+  document.getElementById('vsDayLbl').textContent = `Day ${S.day} · 3 words`;
+  document.getElementById('vocabContent').innerHTML =
+    `<div class="vs-loading"><div class="spin" style="width:20px;height:20px;border-width:2px"></div>جاري تحميل مفردات اليوم...</div>`;
+
+  try {
+    const raw = await api(`Day ${S.day}. Level: ${phData.goal}. Theme: "${theme}".
+
+Generate 3 vocabulary words appropriate for this level and theme. For each word provide:
+- Main word (simple, foundational)
+- 3 academic synonyms (heavier, exam-worthy)
+- 3 phrasal verb equivalents
+
+JSON format:
+{
+  "words": [
+    {
+      "word": "hungry",
+      "pron": "/ˈhʌŋɡri/",
+      "pos": "adjective",
+      "ar": "جائع",
+      "def": "feeling a need or desire for food",
+      "example": "After the long shift, I was too hungry to focus.",
+      "academic_synonyms": [
+        { "word": "famished", "ar": "جائع جداً / مفطور", "ex": "The patient arrived famished after fasting overnight." },
+        { "word": "ravenous", "ar": "شرِه / متلهف للطعام", "ex": "She was ravenous after the 12-hour shift." },
+        { "word": "voracious", "ar": "نَهِم", "ex": "He had a voracious appetite for knowledge." }
+      ],
+      "phrasal_verbs": [
+        { "phrase": "pig out", "ar": "يتخم نفسه بالأكل", "ex": "We pigged out at the hospital cafeteria after the exam." },
+        { "phrase": "wolf down", "ar": "يلتهم الطعام بسرعة", "ex": "He wolfed down his lunch in five minutes." },
+        { "phrase": "eat up", "ar": "يأكل كل شيء أمامه", "ex": "Eat up — we have rounds in ten minutes." }
+      ]
+    }
+  ]
+}
+Return exactly 3 words relevant to theme "${theme}" and level ${phData.goal}.`);
+
+    const d = JSON.parse(raw.replace(/```json|```/g,'').trim());
+    renderVocab(d.words);
+  } catch(e) {
+    document.getElementById('vocabContent').innerHTML =
+      `<div style="color:var(--red);font-size:0.78rem;padding:14px">⚠ خطأ في تحميل المفردات</div>`;
+  }
+}
+
+function renderVocab(words) {
+  const html = words.map((w,wi) => `
+    <div class="vocab-word-block">
+      <div class="vb-main">
+        <span class="vb-word">${w.word}</span>
+        <span class="vb-pron">${w.pron}</span>
+        <span class="vb-pos">${w.pos}</span>
+      </div>
+      <div class="vb-ar">${w.ar}</div>
+      <div class="vb-def">${w.def}</div>
+      <div class="vb-ex">"${w.example}"</div>
+      <div class="vb-syns">
+        <div class="vb-syn-card academic">
+          <div class="vsc-label">Academic Synonyms — أثقل وزناً</div>
+          <div class="vsc-words">
+            ${w.academic_synonyms.map(s=>`
+              <div>
+                <div class="vsc-word">
+                  <span class="vsc-en">${s.word}</span>
+                  <span class="vsc-ar">${s.ar}</span>
+                </div>
+                <div class="vsc-ex">"${s.ex}"</div>
+              </div>`).join('')}
+          </div>
+        </div>
+        <div class="vb-syn-card phrasal">
+          <div class="vsc-label">Phrasal Verbs — أفعال مركبة</div>
+          <div class="vsc-words">
+            ${w.phrasal_verbs.map(p=>`
+              <div>
+                <div class="vsc-word">
+                  <span class="vsc-en">${p.phrase}</span>
+                  <span class="vsc-ar">${p.ar}</span>
+                </div>
+                <div class="vsc-ex">"${p.ex}"</div>
+              </div>`).join('')}
+          </div>
+        </div>
+      </div>
+    </div>`).join('');
+
+  document.getElementById('vocabContent').innerHTML = html;
+  // Save words to spaced repetition bank
+  if(words && words.length) addToVbank(words.map(w=>({
+    word:w.word, ar:w.ar, def:w.def||w.def_en||'', pron:w.pron||'',
+    academic_synonyms:w.academic_synonyms||[], phrasal_verbs:w.phrasal_verbs||[]
+  })));
+}
+
+// ═══════════════════════════════════════════
+//  STATS DASHBOARD
+// ═══════════════════════════════════════════
+function openStats() {
+  document.getElementById('statsModal').classList.add('open');
+  renderStats();
+}
+
+function renderStats() {
+  const colors = {
+    grammar:'var(--c-grammar)', listening:'var(--c-listening)',
+    reading:'var(--c-reading)', writing:'var(--c-writing)', speaking:'var(--c-speaking)'
+  };
+  const skills = ['grammar','listening','reading','writing','speaking'];
+  const ph = getPhase(S.day);
+  const phData = PLAN[ph];
+  const phaseDone = S.completed.filter(d=>{
+    const [a,b]=phData.totalDays; return d>=a&&d<=b;
+  }).length;
+  const totalDays = S.completed.length;
+  const streak = calcStreak();
+  const avgScore = skills.reduce((a,sk)=>a+(S.perf[sk]||50),0)/skills.length;
+  const bestSkill = skills.reduce((a,b)=>(S.perf[a]||50)>(S.perf[b]||50)?a:b);
+  const weakSkill = skills.reduce((a,b)=>(S.perf[a]||50)<(S.perf[b]||50)?a:b);
+
+  // Weekly history (last 7 days completed)
+  const recentDays = S.completed.slice(-7);
+
+  const statsHtml = `
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="sc-val" style="color:var(--accent)">${totalDays}</div>
+        <div class="sc-lbl">أيام مكتملة</div>
+      </div>
+      <div class="stat-card">
+        <div class="sc-val" style="color:var(--green)">${phaseDone}</div>
+        <div class="sc-lbl">أيام ${phData.label}</div>
+      </div>
+      <div class="stat-card">
+        <div class="sc-val" style="color:var(--gold)">${streak}</div>
+        <div class="sc-lbl">سلسلة أيام</div>
+      </div>
+      <div class="stat-card">
+        <div class="sc-val" style="color:${avgScore>=70?'var(--green)':'var(--red)'}">${Math.round(avgScore)}%</div>
+        <div class="sc-lbl">متوسط الأداء</div>
+      </div>
+    </div>
+
+    <div class="chart-wrap">
+      <div class="chart-title">أداء المهارات — Skills Performance</div>
+      <div class="bar-chart">
+        ${skills.map(sk=>{
+          const sc=S.perf[sk]||50;
+          return `<div class="bc-col">
+            <div class="bc-val">${sc}%</div>
+            <div class="bc-bar" style="height:${sc}%;background:${sc<60?'var(--red)':colors[sk]};opacity:0.85"></div>
+            <div class="bc-lbl">${sk.slice(0,4)}</div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+
+    ${S.weakAreas.length>0?`
+    <div class="weak-list">
+      <div class="wl-title">⚠ نقاط الضعف — تحتاج تركيزاً أكثر</div>
+      ${S.weakAreas.map(sk=>`
+        <div class="wl-item">
+          <div class="wl-name">${sk}</div>
+          <div class="wl-track"><div class="wl-fill" style="width:${S.perf[sk]||50}%"></div></div>
+          <div class="wl-score">${S.perf[sk]||50}%</div>
+        </div>`).join('')}
+    </div>`:''}
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+      <div style="background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.2);border-radius:8px;padding:12px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;color:var(--green);margin-bottom:5px">✓ أقوى مهارة</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:0.88rem;color:#fff;font-weight:700">${bestSkill}</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--green)">${S.perf[bestSkill]||50}%</div>
+      </div>
+      <div style="background:rgba(248,113,113,0.06);border:1px solid rgba(248,113,113,0.2);border-radius:8px;padding:12px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;color:var(--red);margin-bottom:5px">⚠ تحتاج عمل</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:0.88rem;color:#fff;font-weight:700">${weakSkill}</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--red)">${S.perf[weakSkill]||50}%</div>
+      </div>
+    </div>
+
+    <div style="background:var(--surface2);border-radius:9px;padding:14px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:var(--muted);margin-bottom:8px;text-transform:uppercase">توصية الذكاء الاصطناعي</div>
+      <div style="font-family:'Tajawal',sans-serif;font-size:0.85rem;color:var(--muted2);line-height:1.7" id="aiRec">
+        ${getAIRec(bestSkill, weakSkill, avgScore)}
+      </div>
+    </div>
+    <div style="margin-top:14px;border-top:1px solid var(--border);padding-top:12px;display:flex;justify-content:space-between;align-items:center">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;color:var(--muted)">API Key: ${window._apiKey?'✓ محفوظ':'✗ غير محفوظ'}</div>
+      <button onclick="resetAPIKey()" style="background:none;border:1px solid rgba(248,113,113,0.3);color:var(--red);padding:4px 12px;border-radius:5px;cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:0.62rem">تغيير المفتاح</button>
+    </div>`;
+
+  document.getElementById('statsContent').innerHTML = statsHtml;
+}
+
+function calcStreak() {
+  if(!S.completed.length) return 0;
+  const sorted = [...S.completed].sort((a,b)=>b-a);
+  let streak=1, prev=sorted[0];
+  for(let i=1;i<sorted.length;i++){
+    if(prev-sorted[i]===1||prev-sorted[i]===2){ streak++; prev=sorted[i]; }
+    else break;
+  }
+  return streak;
+}
+
+function getAIRec(best, weak, avg) {
+  if(avg < 50) return `مستواك العام يحتاج دفعة قوية. ركّز على فهم القاعدة قبل حل التمارين — لا تتسرع. الجودة أهم من السرعة في هذه المرحلة.`;
+  if(avg < 70) return `تقدم جيد! ${weak} هي نقطة ضعفك الرئيسية — خصص 10 دقائق إضافية لها يومياً. ${best} قوتك — استخدمها لبناء ثقتك في المهارات الأخرى.`;
+  return `أداء ممتاز يا ماجد! ${best} في أعلى مستوياتها. ${weak} تحتاج انتباهاً — لكن أنت على المسار الصحيح تماماً نحو PTE Academic.`;
+}
+
+// ═══════════════════════════════════════════
+//  PHASE EVALUATION
+// ═══════════════════════════════════════════
+function openEval() {
+  document.getElementById('evalModal').classList.add('open');
+  renderEval();
+}
+
+function renderEval() {
+  const ph = getPhase(S.day);
+  const phData = PLAN[ph];
+  const phaseDone = S.completed.filter(d=>{
+    const [a,b]=phData.totalDays; return d>=a&&d<=b;
+  }).length;
+  const pct = Math.round((phaseDone/phData.studyDays)*100);
+
+  const evalHtml = `
+    <div style="background:var(--surface2);border-radius:9px;padding:14px;margin-bottom:18px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:var(--muted);margin-bottom:8px">${phData.name} · ${pct}% مكتملة</div>
+      <div style="font-family:'Tajawal',sans-serif;font-size:0.85rem;color:var(--muted2);line-height:1.65">
+        هذا التقييم يقيس مستواك الحقيقي في نهاية ${phData.label}. 
+        سأحلل إجاباتك وأحدد نقاط ضعفك لتعزيزها في المرحلة التالية.
+      </div>
+    </div>
+
+    <div class="eval-section">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--accent);margin-bottom:12px;text-transform:uppercase">✍️ Writing Evaluation</div>
+      <div class="eval-q">
+        <div class="eval-q-text">اكتب فقرة قصيرة (80-100 كلمة) عن: <strong>"The most important skill a nurse needs when working in the US"</strong></div>
+        <textarea class="eval-textarea" id="evalW" placeholder="Start writing in English..."></textarea>
+      </div>
+
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--purple);margin:14px 0 10px;text-transform:uppercase">🗣️ Speaking Evaluation</div>
+      <div class="eval-q">
+        <div class="eval-q-text">اكتب ما ستقوله كردّ على: <strong>"Doctor asks you: Can you give me a quick update on the patient in Room 5?"</strong></div>
+        <textarea class="eval-textarea" id="evalS" placeholder="Write your spoken response in English..."></textarea>
+      </div>
+
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--green);margin:14px 0 10px;text-transform:uppercase">📖 Reading Check</div>
+      <div class="eval-q">
+        <div class="eval-q-text">اقرأ هذه الجملة وأجب: <strong>"Despite the patient's initial reluctance, the nurse persuaded him to undergo the diagnostic procedure."</strong> — What is the main idea?</div>
+        <textarea class="eval-textarea" id="evalR" placeholder="Answer in English..." style="min-height:60px"></textarea>
+      </div>
+
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--gold);margin:14px 0 10px;text-transform:uppercase">🎧 Listening / Vocabulary</div>
+      <div class="eval-q">
+        <div class="eval-q-text">اكتب 3 كلمات تعلمتها خلال هذه المرحلة مع مرادفها الأكاديمي وجملة مثال:</div>
+        <textarea class="eval-textarea" id="evalV" placeholder="Word 1: ___ | Synonym: ___ | Example: ___&#10;Word 2: ___ | Synonym: ___ | Example: ___&#10;Word 3: ___ | Synonym: ___ | Example: ___"></textarea>
+      </div>
+    </div>
+
+    <button class="eval-submit" onclick="submitEval()">🤖 تقييم أدائي بالذكاء الاصطناعي</button>
+    <div class="eval-result" id="evalResult">
+      <h4>نتيجة تقييم المرحلة</h4>
+      <div id="evalResultBody"></div>
+    </div>`;
+
+  document.getElementById('evalContent').innerHTML = evalHtml;
+}
+
+async function submitEval() {
+  const w = document.getElementById('evalW')?.value?.trim();
+  const sp = document.getElementById('evalS')?.value?.trim();
+  const r = document.getElementById('evalR')?.value?.trim();
+  const v = document.getElementById('evalV')?.value?.trim();
+  if(!w||!sp||!r||!v){ alert('يرجى الإجابة على جميع الأسئلة.'); return; }
+
+  const btn = document.querySelector('.eval-submit');
+  btn.disabled=true; btn.textContent='⏳ جاري التقييم...';
+  const res = document.getElementById('evalResult');
+  res.style.display='block';
+  document.getElementById('evalResultBody').innerHTML=`<div class="ld" style="padding:14px"><div class="spin"></div></div>`;
+
+  const ph = getPhase(S.day); const phData = PLAN[ph];
+  try {
+    const feedback = await apiHTML(`You are an expert English language evaluator. Evaluate this ${phData.goal} level student's Phase End Assessment.
+
+WRITING (target ${phData.goal}):
+"${w}"
+
+SPEAKING response:
+"${sp}"
+
+READING comprehension:
+"${r}"
+
+VOCABULARY check:
+"${v}"
+
+Provide evaluation in Arabic/English mix:
+1. Overall Phase Score /100 with level achieved (e.g. "Solid B1" or "Approaching B1+")
+2. Writing: score /25 + 2 specific issues + 1 improved sentence
+3. Speaking: score /25 + fluency assessment + 1 improvement
+4. Reading: score /25 + comprehension analysis
+5. Vocabulary: score /25 + range assessment
+6. Top 3 weak areas to focus on in NEXT phase (specific and actionable)
+7. Encouraging closing message in Arabic
+
+Format with clear HTML headings and lists.`,
+    'You are a professional English language examiner. Be precise, fair, and encouraging. Use HTML.');
+
+    document.getElementById('evalResultBody').innerHTML = `<div class="ai-res">${feedback}</div>`;
+
+    // Auto-update weak areas based on eval
+    const scoreMatches = feedback.match(/(\d+)\s*\/\s*25/g);
+    if(scoreMatches && scoreMatches.length>=4) {
+      const scores = scoreMatches.map(m=>parseInt(m)*4);
+      const skillMap = ['writing','speaking','reading','grammar'];
+      skillMap.forEach((sk,i)=>{ if(scores[i]) recordScore(sk, scores[i]); });
+    }
+  } catch(e) {
+    document.getElementById('evalResultBody').innerHTML='<div style="color:var(--red)">خطأ في الاتصال</div>';
+  }
+  btn.disabled=false; btn.textContent='🤖 تقييم أدائي بالذكاء الاصطناعي';
+}
+
+// ═══════════════════════════════════════════
+//  REVIEW WEAK AREAS
+// ═══════════════════════════════════════════
+function openReview() {
+  document.getElementById('reviewModal').classList.add('open');
+  renderReview();
+}
+
+async function renderReview() {
+  const content = document.getElementById('reviewContent');
+  const ph = getPhase(S.day); const phData = PLAN[ph];
+  const theme = getWeekTheme(S.day);
+
+  if(S.weakAreas.length===0) {
+    content.innerHTML=`
+      <div style="text-align:center;padding:30px">
+        <div style="font-size:2.5rem;margin-bottom:12px">🎉</div>
+        <div style="font-family:'Tajawal',sans-serif;font-size:1rem;color:var(--text);margin-bottom:6px">أداؤك ممتاز في جميع المهارات!</div>
+        <div style="font-family:'Tajawal',sans-serif;font-size:0.82rem;color:var(--muted2)">لا توجد نقاط ضعف واضحة حتى الآن. واصل هكذا يا ماجد.</div>
+      </div>`;
+    return;
+  }
+
+  content.innerHTML=`<div class="ld"><div class="spin"></div><div class="ld-txt">جاري إنشاء جلسة مراجعة مخصصة</div></div>`;
+
+  const weak = S.weakAreas.slice(0,2); // Top 2 weak skills
+  const weakScores = weak.map(sk=>`${sk}: ${S.perf[sk]||50}%`).join(', ');
+
+  try {
+    const raw = await api(`Day ${S.day}. Level: ${phData.goal}. Theme: "${theme}".
+Student weak areas: ${weakScores}.
+
+Generate a focused review session targeting these weaknesses. JSON:
+{
+  "intro_ar": "جملة تشجيعية بالعربي تشرح هدف جلسة المراجعة",
+  "sessions": [
+    {
+      "skill": "grammar|writing|speaking|reading|listening",
+      "title": "session title",
+      "focus_ar": "ما تركز عليه هذه الجلسة بالعربي",
+      "exercise_ar": "وصف التمرين بالعربي",
+      "content": "the actual exercise content in English (text, question, prompt, or mini-passage)",
+      "tip_ar": "نصيحة سريعة لتحسين هذه المهارة بالعربي",
+      "answer_or_model": "model answer or key points"
+    }
+  ]
+}
+sessions: one per weak area (${weak.length} sessions). Make exercises different from regular lessons — focused drill on specific weak pattern.`);
+
+    const d = JSON.parse(raw.replace(/```json|```/g,'').trim());
+    const skillColors = {grammar:'var(--c-grammar)',listening:'var(--c-listening)',reading:'var(--c-reading)',writing:'var(--c-writing)',speaking:'var(--c-speaking)'};
+
+    const html = `
+      <div style="background:rgba(248,113,113,0.06);border:1px solid rgba(248,113,113,0.18);border-radius:9px;padding:14px;margin-bottom:18px">
+        <div style="font-family:'Tajawal',sans-serif;font-size:0.88rem;color:var(--text);line-height:1.65">${d.intro_ar}</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+          ${weak.map(sk=>`<span class="review-badge">⚠ ${sk} — ${S.perf[sk]||50}%</span>`).join('')}
+        </div>
+      </div>
+      ${d.sessions.map((sess,i)=>`
+        <div style="background:var(--surface2);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:16px;margin-bottom:14px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+            <div style="width:4px;height:36px;background:${skillColors[sess.skill]||'var(--accent)'};border-radius:99px"></div>
+            <div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:#fff;font-weight:600">${sess.title}</div>
+              <div style="font-family:'Tajawal',sans-serif;font-size:0.75rem;color:var(--muted2)">${sess.focus_ar}</div>
+            </div>
+          </div>
+          <div style="font-family:'Tajawal',sans-serif;font-size:0.82rem;color:var(--muted2);margin-bottom:10px;line-height:1.65">
+            <strong style="color:var(--text)">التمرين:</strong> ${sess.exercise_ar}
+          </div>
+          <div style="background:var(--bg);border-radius:8px;padding:12px;margin-bottom:12px;font-family:'Inter',sans-serif;font-size:0.85rem;line-height:1.75;border-left:2px solid ${skillColors[sess.skill]||'var(--accent)'}">
+            ${sess.content}
+          </div>
+          <textarea style="width:100%;min-height:70px;background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:10px;color:var(--text);font-family:'Inter',sans-serif;font-size:0.82rem;outline:none;resize:none;margin-bottom:8px" 
+            id="rv${i}" placeholder="إجابتك هنا..."></textarea>
+          <button style="background:var(--surface);border:1px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:6px;cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:0.68rem;transition:all 0.2s" 
+            onclick="showRevModel(${i},'${esc(sess.answer_or_model)}','${esc(sess.tip_ar)}')">عرض النموذج والنصيحة</div>
+          <div id="rvfb${i}" style="display:none;margin-top:10px;background:rgba(52,211,153,0.05);border:1px solid rgba(52,211,153,0.18);border-radius:7px;padding:12px">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:0.62rem;color:var(--green);margin-bottom:6px;text-transform:uppercase">✓ النموذج + النصيحة</div>
+            <div style="font-family:'Inter',sans-serif;font-size:0.82rem;line-height:1.7" id="rvmod${i}"></div>
+            <div style="font-family:'Tajawal',sans-serif;font-size:0.82rem;color:var(--gold);margin-top:8px;border-top:1px solid var(--border);padding-top:8px" id="rvtip${i}"></div>
+          </div>
+        </div>`).join('')}`;
+
+    content.innerHTML = html;
+  } catch(e) {
+    content.innerHTML=`<div style="color:var(--red);padding:14px">خطأ في تحميل جلسة المراجعة</div>`;
+  }
+}
+
+window.showRevModel=(i,model,tip)=>{
+  const fb=document.getElementById(`rvfb${i}`);
+  document.getElementById(`rvmod${i}`).textContent=model;
+  document.getElementById(`rvtip${i}`).textContent='💡 '+tip;
+  fb.style.display='block';
+};
+
+// ═══════════════════════════════════════════
+//  MODAL HELPERS
+// ═══════════════════════════════════════════
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+document.addEventListener('click', e=>{
+  ['statsModal','evalModal','reviewModal'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el&&e.target===el) el.classList.remove('open');
+  });
+});
+
+// ═══════════════════════════════════════════
+//  HELPERS
+// ═══════════════════════════════════════════
+
+// ═══════════════════════════════════════════
+//  SPACED REPETITION — VOCAB BANK
+// ═══════════════════════════════════════════
+const SR_INTERVALS = [1, 3, 7, 14, 30, 90]; // days
+
+function addToVbank(words) {
+  if(!S.vbank) S.vbank = {};
+  const today = S.day;
+  words.forEach(w => {
+    const key = w.word.toLowerCase();
+    if(!S.vbank[key]) {
+      S.vbank[key] = {
+        word: w.word, ar: w.ar, def: w.def||'',
+        pron: w.pron||'', academic: w.academic_synonyms||[],
+        phrasal: w.phrasal_verbs||[],
+        level: 0, nextReview: today + 1,
+        addedDay: today, correct: 0, wrong: 0
+      };
+    }
+  });
+  save();
+}
+
+function getDueWords() {
+  if(!S.vbank) return [];
+  return Object.values(S.vbank).filter(w => w.nextReview <= S.day);
+}
+
+function srAnswer(key, quality) {
+  // quality: 2=easy, 1=hard, 0=forgot
+  const w = S.vbank[key];
+  if(!w) return;
+  if(quality === 2) { w.level = Math.min(w.level+1, SR_INTERVALS.length-1); w.correct++; }
+  else if(quality === 1) { w.level = Math.max(w.level-1, 0); w.wrong++; }
+  else { w.level = 0; w.wrong++; }
+  w.nextReview = S.day + SR_INTERVALS[w.level];
+  save();
+}
+
+function openVbank() {
+  document.getElementById('vbankModal').classList.add('open');
+  renderVbank();
+}
+
+function renderVbank() {
+  if(!S.vbank) S.vbank = {};
+  const all = Object.values(S.vbank);
+  const due = all.filter(w => w.nextReview <= S.day);
+  const mastered = all.filter(w => w.level >= 4);
+  const total = all.length;
+
+  const dueCards = due.length > 0 ? `
+    <div style="margin-bottom:20px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div class="slbl" style="color:var(--gold)">⏰ للمراجعة اليوم — ${due.length} كلمة</div>
+        <button onclick="startSRSession()" style="background:var(--gold);border:none;color:var(--bg);padding:6px 16px;border-radius:6px;cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:0.7rem;font-weight:700">ابدأ المراجعة →</button>
+      </div>
+      <div id="srSession"></div>
+    </div>` : `
+    <div style="background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.18);border-radius:9px;padding:14px;margin-bottom:16px;text-align:center;font-family:'Tajawal',sans-serif;font-size:0.85rem;color:var(--green)">
+      ✓ لا توجد كلمات للمراجعة اليوم — عمل ممتاز!
+    </div>`;
+
+  const stats = `
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px">
+      <div class="stat-card"><div class="sc-val" style="color:var(--accent)">${total}</div><div class="sc-lbl">إجمالي الكلمات</div></div>
+      <div class="stat-card"><div class="sc-val" style="color:var(--gold)">${due.length}</div><div class="sc-lbl">للمراجعة</div></div>
+      <div class="stat-card"><div class="sc-val" style="color:var(--green)">${mastered.length}</div><div class="sc-lbl">محفوظة</div></div>
+    </div>`;
+
+  const allCards = total > 0 ? `
+    <div class="slbl">جميع الكلمات</div>
+    <div class="vbank-grid">
+      ${all.sort((a,b)=>a.nextReview-b.nextReview).map(w => {
+        const isDue = w.nextReview <= S.day;
+        const isMastered = w.level >= 4;
+        const cls = isMastered ? 'mastered' : isDue ? 'due' : '';
+        const lvlCls = isMastered ? 'mastered' : w.level > 0 ? 'learning' : 'new';
+        const lvlTxt = isMastered ? 'محفوظة' : w.level > 0 ? 'تتعلم' : 'جديدة';
+        return `<div class="vbank-card ${cls}" onclick="quickReview('${w.word.toLowerCase()}')">
+          <div class="vbc-word">${w.word}</div>
+          <div class="vbc-ar">${w.ar}</div>
+          <div class="vbc-next">${isDue ? '⏰ للمراجعة الآن' : 'مراجعة: يوم '+w.nextReview}</div>
+          <span class="vbc-lvl ${lvlCls}">${lvlTxt}</span>
+        </div>`;
+      }).join('')}
+    </div>` : `<div style="text-align:center;padding:30px;color:var(--muted);font-family:'Tajawal',sans-serif">ادرس دروسك اليومية لإضافة الكلمات إلى البنك تلقائياً</div>`;
+
+  document.getElementById('vbankContent').innerHTML = stats + dueCards + allCards;
+}
+
+let srQueue = [], srIdx = 0;
+function startSRSession() {
+  srQueue = getDueWords();
+  srIdx = 0;
+  showSRCard();
+}
+
+function showSRCard() {
+  const el = document.getElementById('srSession');
+  if(srIdx >= srQueue.length) {
+    el.innerHTML = `<div style="text-align:center;padding:20px;font-family:'Tajawal',sans-serif;color:var(--green);font-size:0.9rem">🎉 أنهيت جميع كلمات اليوم! ممتاز يا ماجد.</div>`;
+    save(); return;
+  }
+  const w = srQueue[srIdx];
+  const key = w.word.toLowerCase();
+  el.innerHTML = `
+    <div class="sr-card">
+      <div class="sr-hint">ما معنى هذه الكلمة؟</div>
+      <div class="sr-word">${w.word}</div>
+      ${w.pron ? `<div style="font-family:'IBM Plex Mono',monospace;font-size:0.7rem;color:var(--muted)">${w.pron}</div>` : ''}
+      <button class="sr-reveal" onclick="revealSR('${key}')">اكشف الإجابة</button>
+      <div class="sr-answer" id="srAns">
+        <div class="sr-ar">${w.ar}</div>
+        <div class="sr-def">${w.def}</div>
+        <div class="sr-btns">
+          <button class="sr-btn forgot" onclick="srGrade('${key}',0)">نسيت</button>
+          <button class="sr-btn hard" onclick="srGrade('${key}',1)">صعبة</button>
+          <button class="sr-btn easy" onclick="srGrade('${key}',2)">سهلة ✓</button>
+        </div>
+      </div>
+      <div class="sr-progress">${srIdx+1} / ${srQueue.length}</div>
+    </div>`;
+}
+
+window.revealSR = key => { document.getElementById('srAns').style.display='block'; };
+window.srGrade = (key, q) => { srAnswer(key, q); srIdx++; showSRCard(); };
+window.quickReview = key => {
+  const w = S.vbank[key]; if(!w) return;
+  srQueue = [w]; srIdx = 0;
+  document.getElementById('vbankContent').querySelector('.vbank-grid') &&
+  startSRSession();
+};
+
+// ═══════════════════════════════════════════
+//  PRONUNCIATION TRACK
+// ═══════════════════════════════════════════
+async function loadPronTrack(theme, body) {
+  const raw = await api(`Theme: "${theme}". Generate pronunciation drill. JSON:
+{
+  "focus_sound": "specific American English sound e.g. /æ/ or Flap-T or American /r/",
+  "focus_ar": "اسم الصوت بالعربي",
+  "target_word": "one word featuring this sound",
+  "ipa": "/IPA transcription/",
+  "minimal_pairs": [
+    { "w1": "word1", "w2": "word2", "diff": "what's different" }
+  ],
+  "sentences": [
+    "sentence with multiple instances of focus sound",
+    "another sentence"
+  ],
+  "tip_ar": "نصيحة النطق بالعربي — كيف تنطق هذا الصوت بدقة"
+}`);
+  const d = JSON.parse(raw.replace(/\`\`\`json|\`\`\`/g,'').trim());
+  return d;
+}
+
+// ═══════════════════════════════════════════
+//  FRIDAY REVIEW MODE
+// ═══════════════════════════════════════════
+function openFriday() {
+  document.getElementById('fridayModal').classList.add('open');
+  renderFriday();
+}
+
+async function renderFriday() {
+  const el = document.getElementById('fridayContent');
+  el.innerHTML = '<div class="ld"><div class="spin"></div><div class="ld-txt">جاري تحضير مراجعة الجمعة</div></div>';
+
+  const due = getDueWords().slice(0,10);
+  const ph = getPhase(S.day);
+  const phData = PLAN[ph];
+  const theme = getWeekTheme(S.day);
+
+  try {
+    const raw = await api(`Week theme: "${theme}". Level: ${phData.goal}. Generate a light Friday review session. JSON:
+{
+  "quote_ar": "جملة تحفيزية قصيرة بالعربي عن تعلم اللغة",
+  "week_summary_ar": "ملخص ما تعلمناه هذا الأسبوع في جملتين بالعربي",
+  "grammar_recap": {
+    "rule_ar": "مراجعة سريعة لأهم قاعدة هذا الأسبوع بالعربي في جملة واحدة",
+    "quick_q": "سؤال تطبيقي واحد فقط",
+    "answer": "الإجابة"
+  },
+  "shadowing_sentence": "One American English sentence for 5-min shadowing practice",
+  "shadowing_focus": "what to focus on while shadowing"
+}`);
+
+    const d = JSON.parse(raw.replace(/\`\`\`json|\`\`\`/g,'').trim());
+    const vocabSection = due.length > 0 ? `
+      <div class="fm-section">
+        <div class="fms-title" style="color:var(--gold)">📚 مراجعة ${due.length} كلمة من البنك</div>
+        <div style="font-family:'Tajawal',sans-serif;font-size:0.8rem;color:var(--muted2);margin-bottom:10px">هذه الكلمات حان وقت مراجعتها — خصص 5 دقائق لها</div>
+        <button onclick="closeModal('fridayModal');openVbank();setTimeout(startSRSession,300)" style="background:var(--surface3);border:1px solid var(--border);color:var(--text);padding:8px 16px;border-radius:7px;cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:0.7rem;width:100%">ابدأ مراجعة المفردات →</button>
+      </div>` : `
+      <div class="fm-section" style="text-align:center">
+        <div style="font-family:'Tajawal',sans-serif;font-size:0.82rem;color:var(--green)">✓ لا توجد كلمات مستحقة للمراجعة اليوم</div>
+      </div>`;
+
+    el.innerHTML = `
+      <div class="friday-mode">
+        <div class="fm-header">
+          <div class="fm-icon">🌙</div>
+          <div class="fm-title">يوم الجمعة — مراجعة خفيفة</div>
+          <div class="fm-sub" style="font-style:italic;color:var(--gold)">"${d.quote_ar}"</div>
+        </div>
+        <div class="fm-sections">
+          <div class="fm-section">
+            <div class="fms-title" style="color:var(--accent)">📋 ماذا تعلمت هذا الأسبوع؟</div>
+            <div style="font-family:'Tajawal',sans-serif;font-size:0.85rem;color:var(--muted2);line-height:1.7">${d.week_summary_ar}</div>
+          </div>
+          <div class="fm-section">
+            <div class="fms-title" style="color:var(--c-grammar)">📐 مراجعة القواعد السريعة</div>
+            <div style="font-family:'Tajawal',sans-serif;font-size:0.82rem;color:var(--text);margin-bottom:10px">${d.grammar_recap.rule_ar}</div>
+            <div style="font-family:'Inter',sans-serif;font-size:0.82rem;color:var(--muted2);margin-bottom:8px">❓ ${d.grammar_recap.quick_q}</div>
+            <details style="cursor:pointer">
+              <summary style="font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--accent)">عرض الإجابة</summary>
+              <div style="font-family:'Inter',sans-serif;font-size:0.82rem;color:var(--green);margin-top:6px;padding:8px;background:var(--bg);border-radius:6px">${d.grammar_recap.answer}</div>
+            </details>
+          </div>
+          ${vocabSection}
+          <div class="fm-section">
+            <div class="fms-title" style="color:var(--purple)">🔁 Shadowing — 5 دقائق فقط</div>
+            <div style="font-family:'Tajawal',sans-serif;font-size:0.75rem;color:var(--muted2);margin-bottom:8px">ركّز على: ${d.shadowing_focus}</div>
+            <div style="font-family:'Inter',sans-serif;font-size:0.95rem;color:var(--text);background:var(--bg);padding:12px;border-radius:8px;line-height:1.8;border-left:2px solid var(--purple)">"${d.shadowing_sentence}"</div>
+            <div style="font-family:'Tajawal',sans-serif;font-size:0.75rem;color:var(--muted2);margin-top:8px">كرر 5 مرات بصوت عالٍ — سجّل نفسك في المرة الأخيرة</div>
+          </div>
+        </div>
+      </div>`;
+  } catch(e) {
+    el.innerHTML = '<div style="color:var(--red);padding:14px">خطأ في تحميل مراجعة الجمعة</div>';
+  }
+}
+
+// ═══════════════════════════════════════════
+//  PTE SIMULATOR (Phase 4 only)
+// ═══════════════════════════════════════════
+function openPTE() {
+  document.getElementById('pteModal').classList.add('open');
+  renderPTESim();
+}
+
+const PTE_TASKS = [
+  { id:'ra', label:'Read Aloud', label_ar:'القراءة الجهرية', time:40, type:'speaking' },
+  { id:'rs', label:'Repeat Sentence', label_ar:'تكرار الجملة', time:15, type:'speaking' },
+  { id:'swt', label:'Summarize Written Text', label_ar:'تلخيص النص', time:600, type:'writing' },
+  { id:'we', label:'Write Essay', label_ar:'كتابة المقال', time:1200, type:'writing' },
+  { id:'wfd', label:'Write from Dictation', label_ar:'الكتابة من الإملاء', time:30, type:'listening' },
+];
+
+let pteTask = null, pteTimer = null, pteTimerSec = 0;
+
+async function renderPTESim() {
+  const el = document.getElementById('pteContent');
+  el.innerHTML = '<div class="ld"><div class="spin"></div><div class="ld-txt">generating PTE task</div></div>';
+  const ph = getPhase(S.day);
+  const theme = getWeekTheme(S.day);
+  const taskDef = PTE_TASKS[S.day % PTE_TASKS.length];
+
+  try {
+    const raw = await api(`Generate a PTE Academic task. Task type: ${taskDef.label} (${taskDef.label_ar}). Theme: "${theme}". Level: B2+. JSON:
+{
+  "task_type": "${taskDef.id}",
+  "task_label_ar": "${taskDef.label_ar}",
+  "instructions_ar": "تعليمات المهمة بالعربي",
+  "prompt": "the actual PTE task content — passage for RA/SWT, sentence for RS/WFD, topic for WE",
+  "time_allowed": ${taskDef.time},
+  "scoring_tips_ar": "3 نصائح تسجيل مختصرة بالعربي",
+  "model_answer": "model answer or key points to include"
+}`);
+    const d = JSON.parse(raw.replace(/\`\`\`json|\`\`\`/g,'').trim());
+    pteTask = d;
+
+    const isWriting = taskDef.type === 'writing';
+    const isSpeaking = taskDef.type === 'speaking';
+
+    el.innerHTML = `
+      <div style="margin-bottom:14px">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+          ${PTE_TASKS.map(t => `<button onclick="switchPTETask('${t.id}')" style="font-family:'IBM Plex Mono',monospace;font-size:0.62rem;padding:3px 10px;border-radius:4px;cursor:pointer;border:1px solid var(--border);background:${t.id===taskDef.id?'var(--accent)':'var(--surface2)'};color:${t.id===taskDef.id?'var(--bg)':'var(--muted)'}">${t.label}</button>`).join('')}
+        </div>
+      </div>
+      <div class="pte-sim">
+        <div class="pte-sim-header">
+          <div class="pte-sim-title">PTE Academic · ${d.task_label_ar}</div>
+          <div class="pte-countdown" id="pteCountdown">${formatTime(d.time_allowed)}</div>
+        </div>
+        <div style="padding:14px 14px 0;font-family:'Tajawal',sans-serif;font-size:0.78rem;color:var(--muted2)">📋 ${d.instructions_ar}</div>
+        <div class="pte-prompt">${d.prompt}</div>
+        ${isWriting ? `
+          <div class="pte-writebox">
+            <textarea id="pteWrite" placeholder="ابدأ الكتابة هنا..." oninput="ptewc(this)"></textarea>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:0.62rem;color:var(--muted);margin-top:4px" id="ptewcount">0 words</div>
+          </div>` : `
+          <div class="pte-rec-area">
+            <div class="pte-mic">🎙️</div>
+            <div class="pte-status">اقرأ/كرر النص بصوت واضح · سجّل نفسك وقارن بالنموذج</div>
+            <textarea style="width:100%;margin-top:10px;min-height:60px;background:var(--surface3);border:1px solid var(--border);border-radius:7px;padding:10px;color:var(--text);font-family:'Inter',sans-serif;font-size:0.82rem;outline:none;resize:none" id="pteWrite" placeholder="أو اكتب ما قلته هنا للتقييم..."></textarea>
+          </div>`}
+        <button class="pte-submit" onclick="submitPTE()">📊 تقييم إجابتي</button>
+        <div class="pte-score-card" id="pteScore">
+          <h4>نتيجة المهمة</h4>
+          <div id="pteScoreBody"></div>
+        </div>
+        <div style="padding:0 14px 14px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;color:var(--muted);margin-bottom:6px;text-transform:uppercase">نصائح التسجيل</div>
+          <div style="font-family:'Tajawal',sans-serif;font-size:0.78rem;color:var(--muted2);line-height:1.6">${d.scoring_tips_ar}</div>
+        </div>
+      </div>`;
+
+    // Start countdown
+    startPTETimer(d.time_allowed);
+  } catch(e) {
+    el.innerHTML = '<div style="color:var(--red);padding:14px">خطأ — أعد المحاولة</div>';
+  }
+}
+
+function startPTETimer(sec) {
+  clearInterval(pteTimer); pteTimerSec = sec;
+  const el = document.getElementById('pteCountdown');
+  pteTimer = setInterval(() => {
+    pteTimerSec--;
+    if(el) el.textContent = formatTime(pteTimerSec);
+    if(pteTimerSec <= 0) { clearInterval(pteTimer); if(el) el.textContent = '⏰ TIME!'; el && (el.style.color='var(--red)'); }
+    if(pteTimerSec === 10 && el) el.style.color='var(--red)';
+  }, 1000);
+}
+function formatTime(s) { return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); }
+window.ptewc = ta => { const n=ta.value.trim().split(/\s+/).filter(w=>w).length; const el=document.getElementById('ptewcount'); if(el)el.textContent=n+' words'; };
+window.switchPTETask = async (id) => { clearInterval(pteTimer); await renderPTESim(); };
+
+window.submitPTE = async () => {
+  clearInterval(pteTimer);
+  const text = document.getElementById('pteWrite')?.value?.trim();
+  if(!text||text.length<5){alert('اكتب إجابتك أولاً');return;}
+  const sc = document.getElementById('pteScore');
+  const sb = document.getElementById('pteScoreBody');
+  sc.style.display='block';
+  sb.innerHTML='<div class="ld" style="padding:10px"><div class="spin"></div></div>';
+  try {
+    const r = await apiHTML(`PTE Task: ${pteTask?.task_label_ar}. Student answer: "${text}". Model: "${pteTask?.model_answer}".
+Evaluate as PTE AI scorer. Score each: Content /5, Form /5, Grammar /5, Vocabulary /5, Fluency/Spelling /5.
+Total /25 → convert to PTE band (55-90).
+Give 2 specific improvements. Arabic/English mix. HTML format.`);
+    sb.innerHTML=`<div class="ai-res">${r}</div>`;
+  } catch(e) { sb.innerHTML='<div style="color:var(--red)">خطأ</div>'; }
+};
+
+// ═══════════════════════════════════════════
+//  IMPORT PHASE SYSTEM
+// ═══════════════════════════════════════════
+function openImport() {
+  document.getElementById('importModal').classList.add('open');
+  renderImportedList();
+}
+
+function renderImportedList() {
+  const imported = S.importedPhases || [];
+  const el = document.getElementById('importedPhases');
+  if(imported.length === 0) {
+    el.innerHTML = '<div style="font-family:'Tajawal',sans-serif;font-size:0.78rem;color:var(--muted);margin-top:10px">لا توجد مراحل مستوردة بعد</div>';
+    return;
+  }
+  el.innerHTML = `
+    <div class="slbl" style="margin-top:14px">المراحل المستوردة</div>
+    ${imported.map((p,i) => `
+      <div class="ip-card">
+        <div>
+          <div class="ip-info">${p.name || p.phase}</div>
+          <div class="ip-meta">${p.goal || ''} · أيام ${p.days?.[0]||''}-${p.days?.[1]||''}</div>
+        </div>
+        <button class="ip-del" onclick="deleteImport(${i})">حذف</button>
+      </div>`).join('')}`;
+}
+
+window.importPhase = () => {
+  const json = document.getElementById('importJson').value.trim();
+  const res = document.getElementById('importResult');
+  res.style.display = 'block';
+  if(!json) { res.className='import-result err'; res.textContent='❌ الحقل فارغ — الصق JSON المرحلة أولاً'; return; }
+  try {
+    const d = JSON.parse(json);
+    if(!d.phase || !d.name) throw new Error('يجب أن يحتوي JSON على: phase, name');
+    if(!S.importedPhases) S.importedPhases = [];
+    // Check duplicate
+    const exists = S.importedPhases.findIndex(p => p.phase === d.phase);
+    if(exists >= 0) S.importedPhases[exists] = d;
+    else S.importedPhases.push(d);
+    // Add to PLAN dynamically
+    PLAN[d.phase] = d;
+    save();
+    res.className='import-result ok';
+    res.textContent=`✓ تم استيراد "${d.name}" بنجاح! (${d.days?.[0]||''}-${d.days?.[1]||''})`;
+    document.getElementById('importJson').value = '';
+    renderImportedList();
+  } catch(e) {
+    res.className='import-result err';
+    res.textContent='❌ JSON غير صحيح: ' + e.message;
+  }
+};
+
+window.deleteImport = i => {
+  if(!S.importedPhases) return;
+  const ph = S.importedPhases[i];
+  if(ph && PLAN[ph.phase] && !['p1','p2','p3','p4'].includes(ph.phase)) delete PLAN[ph.phase];
+  S.importedPhases.splice(i,1);
+  save(); renderImportedList();
+};
+
+// Generate import template for Claude
+window.generateImportTemplate = () => {
+  const template = {
+    phase: "p5",
+    name: "Phase 5 · C1 Advanced",
+    goal: "B2+ → C1",
+    days: [245, 304],
+    studyDays: 52,
+    weekThemes: [
+      "Advanced Academic Reading & Critical Analysis",
+      "Complex Argument Writing — C1 Style",
+      "Idiomatic Expression & Natural Fluency",
+      "Professional Presentation & Public Speaking",
+      "Advanced Grammar — Inversion & Emphasis",
+      "Research Writing & Academic Conventions",
+      "C1 Listening — Lectures & Debates",
+      "Spontaneous Discussion & Opinion Expression",
+      "C1 Mock Tests & Final Assessment"
+    ],
+    sources: {
+      grammar: { name: "English Grammar in Use Advanced (Murphy)", units: "Units 1-30 Advanced Topics", ytSearch: "advanced english grammar C1 شرح" },
+      listening: { name: "TED Talks + BBC Learning English", url: "https://ted.com", level: "Advanced Academic" },
+      reading: { name: "ReadTheory + IELTS Reading", url: "https://readtheory.org", level: "Grade 12 + Academic" },
+      writing: { name: "Academic Writing for Graduate Students", url: "https://writeandimprove.com", level: "C1 Academic" },
+      speaking: { name: "Cambly Advanced + Debate Practice", url: "https://cambly.com", focus: "Academic argumentation & fluency" },
+      ext: {
+        tools: [
+          { name: "Cambly", url: "https://cambly.com", task: "Advanced Debate Session", time: "30 min", icon: "💬", desc: "ناقش موضوعاً أكاديمياً معقداً مع معلم أمريكي — أهداف: الحجج المضادة والتفكير السريع" },
+          { name: "TED Talks", url: "https://ted.com", task: "Watch + Summarize + Shadow", time: "20 min", icon: "🎤", desc: "شاهد محاضرة TED، اكتب ملخصاً أكاديمياً، ثم shadow المتحدث لمدة دقيقتين" }
+        ]
+      }
+    }
+  };
+  document.getElementById('importJson').value = JSON.stringify(template, null, 2);
+};
+
+// ═══════════════════════════════════════════
+//  PRONUNCIATION TRACK INTEGRATION
+// ═══════════════════════════════════════════
+async function addPronTrack(theme, container) {
+  const ph = getPhase(S.day);
+  const phData = PLAN[ph];
+  try {
+    const raw = await api(`Phase: ${ph}. Level: ${phData.goal}. Theme: "${theme}". Generate pronunciation focus for today. JSON:
+{
+  "sound": "specific sound e.g. /æ/ or Flap-T or American /r/ or /θ/",
+  "sound_ar": "اسم الصوت",
+  "target_word": "key word with this sound",
+  "ipa": "/IPA/",
+  "tip_ar": "كيف تنطق هذا الصوت — وصف عملي بالعربي",
+  "sentences": ["drill sentence 1", "drill sentence 2"],
+  "common_error_ar": "الخطأ الشائع للمتحدثين العرب في هذا الصوت"
+}`);
+    const d = JSON.parse(raw.replace(/\`\`\`json|\`\`\`/g,'').trim());
+    const div = document.createElement('div');
+    div.className = 'pron-track';
+    div.innerHTML = `
+      <div class="pt-header">
+        <div class="pt-title">🔊 نطق اليوم — ${d.sound_ar}</div>
+        <div class="pt-timer">5 دقائق</div>
+      </div>
+      <div class="pron-word-focus">${d.target_word}</div>
+      <div class="pron-ipa">${d.ipa}</div>
+      <div style="font-family:'Tajawal',sans-serif;font-size:0.82rem;color:var(--muted2);margin-bottom:10px;line-height:1.65">💡 ${d.tip_ar}</div>
+      <div style="font-family:'Tajawal',sans-serif;font-size:0.75rem;color:var(--red);margin-bottom:10px">⚠ ${d.common_error_ar}</div>
+      <div class="pt-steps">
+        ${d.sentences.map((s,i) => `
+          <div class="pt-step">
+            <div class="pts-num">0${i+1}</div>
+            <div class="pts-txt">كرر: <strong>"${s}"</strong></div>
+          </div>`).join('')}
+        <div class="pt-step">
+          <div class="pts-num">03</div>
+          <div class="pts-txt">سجّل نفسك وقارن بالنطق الأمريكي على Google Translate</div>
+        </div>
+      </div>
+      <button class="record-btn" onclick="this.textContent=this.textContent==='🎙️ اضغط للتسجيل'?'⏹ إيقاف':'🎙️ اضغط للتسجيل'">🎙️ اضغط للتسجيل</button>`;
+    container.appendChild(div);
+  } catch(e) {}
+}
+
+// ═══════════════════════════════════════════
+//  GRAMMAR UNITS CURRICULUM
+// ═══════════════════════════════════════════
+const GRAMMAR_UNITS = {
+  p1: [
+    {unit:1,title:'Present Simple',title_ar:'المضارع البسيط',topic:'daily habits & facts',level:'A2'},
+    {unit:2,title:'Present Simple: questions',title_ar:'المضارع البسيط: الأسئلة',topic:'forming questions',level:'A2'},
+    {unit:3,title:'Present Continuous',title_ar:'المضارع المستمر',topic:'actions happening now',level:'A2'},
+    {unit:4,title:'Present Simple vs Continuous',title_ar:'المضارع البسيط مقابل المستمر',topic:'state vs action verbs',level:'A2'},
+    {unit:5,title:'State Verbs (know/like/want)',title_ar:'أفعال الحالة',topic:'verbs not used in continuous',level:'A2'},
+    {unit:6,title:'Present Simple: he/she/it -s',title_ar:'الفعل مع الضمائر المفردة',topic:'third person singular',level:'A2'},
+    {unit:7,title:'Past Simple',title_ar:'الماضي البسيط',topic:'completed past actions',level:'A2'},
+    {unit:8,title:'Past Simple: irregular verbs',title_ar:'الأفعال الشاذة في الماضي',topic:'irregular verb forms',level:'A2'},
+    {unit:9,title:'Past Continuous',title_ar:'الماضي المستمر',topic:'ongoing past actions',level:'A2'},
+    {unit:10,title:'Past Simple vs Continuous',title_ar:'الماضي البسيط مقابل المستمر',topic:'interrupted past actions',level:'A2'},
+    {unit:11,title:'Past Simple: questions & negatives',title_ar:'الماضي: أسئلة ونفي',topic:'did/didn\'t questions',level:'A2'},
+    {unit:12,title:'Used to',title_ar:'اعتدت أن / كنت أفعل',topic:'past habits no longer true',level:'A2'},
+    {unit:13,title:'Present Perfect: have/has done',title_ar:'المضارع التام',topic:'past with present result',level:'A2'},
+    {unit:14,title:'Present Perfect: just/already/yet',title_ar:'just · already · yet',topic:'recent events',level:'A2'},
+    {unit:15,title:'Present Perfect: ever/never',title_ar:'ever و never',topic:'life experiences',level:'A2'},
+    {unit:16,title:'Present Perfect vs Past Simple',title_ar:'المضارع التام مقابل الماضي',topic:'choosing the right tense',level:'A2'},
+    {unit:17,title:'Present Perfect: for & since',title_ar:'for و since',topic:'duration up to now',level:'A2'},
+    {unit:18,title:'Present Perfect Continuous',title_ar:'المضارع التام المستمر',topic:'ongoing actions from past',level:'A2'},
+    {unit:19,title:'Future: will',title_ar:'المستقبل مع will',topic:'predictions & spontaneous decisions',level:'A2'},
+    {unit:20,title:'Future: going to',title_ar:'المستقبل مع going to',topic:'plans & intentions',level:'A2'},
+    {unit:21,title:'Will vs Going to',title_ar:'will مقابل going to',topic:'choosing the right future form',level:'A2'},
+    {unit:22,title:'Future: Present Continuous for plans',title_ar:'المستمر للمستقبل المرتب',topic:'arranged future events',level:'A2'},
+    {unit:23,title:'Future: Present Simple for timetables',title_ar:'المضارع البسيط للجداول',topic:'fixed schedules',level:'A2'},
+    {unit:24,title:'When/If + present for future',title_ar:'when و if مع المستقبل',topic:'time/conditional clauses',level:'A2'},
+    {unit:25,title:'Can / Could / Be able to',title_ar:'can · could · be able to',topic:'ability & possibility',level:'A2'},
+    {unit:26,title:'Must / Have to',title_ar:'must و have to',topic:'obligation & necessity',level:'A2'},
+    {unit:27,title:'Must not vs Don\'t have to',title_ar:'الفرق بين النهي وعدم الإلزام',topic:'prohibition vs no obligation',level:'A2'},
+    {unit:28,title:'Should / Ought to',title_ar:'should و ought to',topic:'advice & recommendations',level:'A2'},
+    {unit:29,title:'Would — past habits',title_ar:'would للماضي المعتاد',topic:'repeated past actions (formal)',level:'A2'},
+    {unit:30,title:'May / Might — possibility',title_ar:'may و might',topic:'possibility & uncertainty',level:'A2'},
+    {unit:31,title:'Passive: Present Simple',title_ar:'المبني للمجهول: المضارع',topic:'is/are + past participle',level:'B1'},
+    {unit:32,title:'Passive: Past Simple',title_ar:'المبني للمجهول: الماضي',topic:'was/were + past participle',level:'B1'},
+    {unit:33,title:'Passive: other tenses',title_ar:'المبني للمجهول: أزمنة متعددة',topic:'perfect & continuous passive',level:'B1'},
+    {unit:34,title:'Passive with modal verbs',title_ar:'المبني للمجهول مع الأفعال الناقصة',topic:'modal + be + past participle',level:'B1'},
+    {unit:35,title:'Reported Speech: statements',title_ar:'الكلام المنقول: الجمل الخبرية',topic:'she said that...',level:'B1'},
+    {unit:36,title:'Reported Speech: questions',title_ar:'الكلام المنقول: الأسئلة',topic:'she asked if/whether/what...',level:'B1'},
+    {unit:37,title:'Questions: word order',title_ar:'ترتيب كلمات السؤال',topic:'auxiliary + subject + verb',level:'A2'},
+    {unit:38,title:'Negative questions',title_ar:'الأسئلة المنفية',topic:'don\'t you? isn\'t it?',level:'A2'},
+    {unit:39,title:'Question tags',title_ar:'الذيل التأكيدي',topic:'isn\'t it? / wasn\'t she?',level:'B1'},
+    {unit:40,title:'Zero & First Conditional',title_ar:'الشرط الصفري والأول',topic:'real & possible conditions',level:'B1'},
+    {unit:41,title:'Second Conditional',title_ar:'الشرط الثاني',topic:'unreal present/future situations',level:'B1'},
+    {unit:42,title:'Third Conditional',title_ar:'الشرط الثالث',topic:'unreal past situations',level:'B1'},
+    {unit:43,title:'A/An vs The',title_ar:'الفرق بين a/an و the',topic:'definite vs indefinite articles',level:'A2'},
+    {unit:44,title:'The — specific uses',title_ar:'استخدامات the المحددة',topic:'unique nouns & known referents',level:'A2'},
+    {unit:45,title:'No article — general meaning',title_ar:'حذف أداة التعريف',topic:'plural & uncountable generics',level:'A2'},
+    {unit:46,title:'Prepositions of Time: at/in/on',title_ar:'حروف الجر الزمنية',topic:'at night / in March / on Monday',level:'A2'},
+    {unit:47,title:'Prepositions of Place',title_ar:'حروف الجر المكانية',topic:'at/in/on for locations',level:'A2'},
+    {unit:48,title:'Adjective + Preposition',title_ar:'الصفة + حرف الجر',topic:'interested in / good at / proud of',level:'B1'},
+    {unit:49,title:'Verb + Preposition',title_ar:'الفعل + حرف الجر',topic:'depend on / look at / wait for',level:'B1'},
+    {unit:50,title:'Countable & Uncountable Nouns',title_ar:'الأسماء المعدودة وغير المعدودة',topic:'some/any/much/many/a few/a little',level:'A2'},
+    {unit:51,title:'Comparative Adjectives',title_ar:'أسلوب المقارنة',topic:'-er / more + adjective + than',level:'A2'},
+    {unit:52,title:'Superlative Adjectives',title_ar:'أسلوب التفضيل',topic:'the -est / the most + adjective',level:'A2'}
+  ],
+  p2: [
+    {unit:1,title:'The Paragraph: structure',title_ar:'هيكل الفقرة الأكاديمية',topic:'topic sentence + support + conclusion',level:'B1'},
+    {unit:2,title:'Topic Sentences',title_ar:'الجملة الرئيسية',topic:'writing a strong controlling topic sentence',level:'B1'},
+    {unit:3,title:'Supporting Sentences',title_ar:'الجمل الداعمة',topic:'facts, examples, explanations',level:'B1'},
+    {unit:4,title:'Concluding Sentences',title_ar:'جملة الخاتمة في الفقرة',topic:'restate + final thought',level:'B1'},
+    {unit:5,title:'Unity & Coherence',title_ar:'الوحدة والترابط في الفقرة',topic:'staying on topic, no off-track sentences',level:'B1'},
+    {unit:6,title:'Transition Signals',title_ar:'أدوات الربط',topic:'first / however / in addition / therefore',level:'B1'},
+    {unit:7,title:'Simple & Compound Sentences',title_ar:'الجمل البسيطة والمركبة',topic:'coordinating conjunctions: and/but/so/or',level:'B1'},
+    {unit:8,title:'Complex Sentences',title_ar:'الجمل المعقدة',topic:'subordinating conjunctions: although/because/when/if',level:'B1'},
+    {unit:9,title:'Sentence Variety',title_ar:'تنويع الجمل',topic:'mixing simple, compound, and complex sentences',level:'B1'},
+    {unit:10,title:'Descriptive Paragraphs',title_ar:'الفقرة الوصفية',topic:'sensory details: sight/sound/smell/touch',level:'B1'},
+    {unit:11,title:'Process Paragraphs',title_ar:'فقرة وصف العملية',topic:'first / next / then / finally sequence',level:'B1'},
+    {unit:12,title:'Definition Paragraphs',title_ar:'فقرة التعريف',topic:'general class + distinguishing features + examples',level:'B1'},
+    {unit:13,title:'Classification Paragraphs',title_ar:'فقرة التصنيف',topic:'grouping into 2-3 categories with examples',level:'B1'},
+    {unit:14,title:'Cause & Effect Paragraphs',title_ar:'فقرة السبب والنتيجة',topic:'because / therefore / as a result / consequently',level:'B1+'},
+    {unit:15,title:'Comparison & Contrast',title_ar:'المقارنة والمقابلة',topic:'similarly / on the other hand / whereas',level:'B1+'},
+    {unit:16,title:'Opinion Paragraphs',title_ar:'فقرة الرأي',topic:'I believe / In my opinion + strong support',level:'B1+'},
+    {unit:17,title:'From Paragraph to Essay',title_ar:'من الفقرة إلى المقال',topic:'3-paragraph essay structure overview',level:'B1+'},
+    {unit:18,title:'The Essay Introduction',title_ar:'مقدمة المقال الأكاديمي',topic:'hook + background + thesis statement',level:'B1+'},
+    {unit:19,title:'The Thesis Statement',title_ar:'الفكرة الرئيسية للمقال',topic:'controlling idea + 2-3 main points',level:'B1+'},
+    {unit:20,title:'Body Paragraphs in Essays',title_ar:'فقرات الجسم في المقال',topic:'each paragraph = one main point from thesis',level:'B1+'},
+    {unit:21,title:'The Essay Conclusion',title_ar:'خاتمة المقال',topic:'restate thesis + summary + final thought',level:'B1+'},
+    {unit:22,title:'Essay Coherence & Flow',title_ar:'تماسك المقال',topic:'linking paragraphs with transitions',level:'B1+'},
+    {unit:23,title:'Academic Vocabulary in Essays',title_ar:'المفردات الأكاديمية في المقال',topic:'formal vs informal: use vs utilize',level:'B1+'},
+    {unit:24,title:'Editing & Proofreading',title_ar:'المراجعة والتصحيح',topic:'grammar / punctuation / clarity checklist',level:'B1+'}
+  ],
+  p3: [
+    {unit:1,title:'Essay Types Overview',title_ar:'أنواع المقالات الأكاديمية',topic:'argumentative / cause-effect / compare / discuss',level:'B1+'},
+    {unit:2,title:'Argumentative Essay: structure',title_ar:'هيكل المقال الحجاجي',topic:'claim + evidence + counterargument + conclusion',level:'B1+'},
+    {unit:3,title:'Strong Thesis Statements',title_ar:'الفكرة الرئيسية القوية',topic:'specific + arguable + structured thesis',level:'B1+'},
+    {unit:4,title:'Evidence & Examples',title_ar:'الأدلة والأمثلة',topic:'facts, statistics, expert opinion, anecdotes',level:'B1+'},
+    {unit:5,title:'Counterargument & Refutation',title_ar:'الحجة المضادة والرد عليها',topic:'some argue... however, this overlooks...',level:'B2'},
+    {unit:6,title:'Cause & Effect Essays',title_ar:'مقال السبب والنتيجة',topic:'because / this leads to / consequently / as a result',level:'B2'},
+    {unit:7,title:'Multiple Causes & Effects',title_ar:'أسباب ونتائج متعددة',topic:'chain reaction writing: A causes B which leads to C',level:'B2'},
+    {unit:8,title:'Comparison & Contrast Essays',title_ar:'مقال المقارنة',topic:'point-by-point vs block method',level:'B2'},
+    {unit:9,title:'Problem & Solution Essays',title_ar:'مقال المشكلة والحل',topic:'identifying problem + proposing feasible solutions',level:'B2'},
+    {unit:10,title:'Discussion Essays',title_ar:'المقال النقاشي',topic:'present both sides + conclude with personal view',level:'B2'},
+    {unit:11,title:'Academic Style & Register',title_ar:'الأسلوب الأكاديمي الرسمي',topic:'avoiding contractions / informal language / I think',level:'B2'},
+    {unit:12,title:'Advanced Cohesive Devices',title_ar:'أدوات الربط المتقدمة',topic:'nevertheless / whereas / given that / notwithstanding',level:'B2'},
+    {unit:13,title:'Nominalization',title_ar:'التحويل إلى اسم',topic:'increase→growth / fail→failure / decide→decision',level:'B2'},
+    {unit:14,title:'Hedging Language',title_ar:'لغة التحفظ الأكاديمي',topic:'it appears / may suggest / tends to / is likely to',level:'B2'},
+    {unit:15,title:'Passive Voice in Academic Writing',title_ar:'المبني للمجهول في الكتابة الأكاديمية',topic:'it was found that / has been shown / is considered',level:'B2'},
+    {unit:16,title:'Relative Clauses in Essays',title_ar:'الجمل الوصفية في المقال',topic:'defining vs non-defining: which/who/where/whose',level:'B2'},
+    {unit:17,title:'Parallel Structure',title_ar:'التوازي في الهيكل',topic:'X, Y, and Z must share the same grammatical form',level:'B2'},
+    {unit:18,title:'Summarizing Sources',title_ar:'تلخيص المصادر',topic:'paraphrasing without plagiarism — own words + same idea',level:'B2'},
+    {unit:19,title:'Citing & Referencing',title_ar:'الاستشهاد والمراجع',topic:'according to / as stated by / research suggests',level:'B2'},
+    {unit:20,title:'Writing Under Time Pressure',title_ar:'الكتابة تحت ضغط الوقت',topic:'5-min plan → 30-min write → 5-min edit',level:'B2'},
+    {unit:21,title:'Essay Revision Strategies',title_ar:'استراتيجيات مراجعة المقال',topic:'content / organization / language / mechanics checklist',level:'B2'},
+    {unit:22,title:'B2 Full Practice Essay',title_ar:'تدريب شامل على مقال B2',topic:'full essay from plan to polished final draft',level:'B2'},
+    {unit:23,title:'Common Essay Errors — Analysis',title_ar:'تحليل الأخطاء الشائعة في المقالات',topic:'Arab learner error patterns + corrections',level:'B2'},
+    {unit:24,title:'Transition to PTE Writing Tasks',title_ar:'الانتقال إلى مهام الكتابة في PTE',topic:'Summarize Written Text + PTE Write Essay overview',level:'B2'}
+  ],
+  p4: [
+    {unit:1,title:'PTE Speaking: Read Aloud',title_ar:'PTE: القراءة الجهرية',topic:'rhythm / chunking / no hesitation / clear pronunciation',level:'B2'},
+    {unit:2,title:'Read Aloud: Stress & Intonation',title_ar:'النبر والتنغيم في القراءة',topic:'content words stressed / function words reduced',level:'B2'},
+    {unit:3,title:'Repeat Sentence',title_ar:'تكرار الجملة',topic:'short-term audio memory + exact word-for-word repetition',level:'B2'},
+    {unit:4,title:'Describe Image',title_ar:'وصف الصورة / الرسم البياني',topic:'opening formula + key data + conclusion sentence',level:'B2'},
+    {unit:5,title:'Re-Tell Lecture',title_ar:'إعادة سرد المحاضرة',topic:'main idea + 2 supporting details + conclusion',level:'B2'},
+    {unit:6,title:'Answer Short Question',title_ar:'الإجابة على السؤال القصير',topic:'one-word or brief factual answers — no filler',level:'B2'},
+    {unit:7,title:'Summarize Written Text',title_ar:'تلخيص النص المكتوب',topic:'one sentence only: 5-75 words — template approach',level:'B2'},
+    {unit:8,title:'Write Essay: Template Mastery',title_ar:'قالب مقال PTE',topic:'intro + 2 body paragraphs + conclusion in 20 minutes',level:'B2+'},
+    {unit:9,title:'Write Essay: Opinion Type',title_ar:'مقال الرأي في PTE',topic:'agree/disagree template — I firmly believe...',level:'B2+'},
+    {unit:10,title:'Write Essay: Discussion Type',title_ar:'المقال النقاشي في PTE',topic:'both sides template + personal stance conclusion',level:'B2+'},
+    {unit:11,title:'Listening: Summarize Spoken Text',title_ar:'تلخيص النص المسموع',topic:'notes during audio → 50-70 word summary',level:'B2+'},
+    {unit:12,title:'Write from Dictation',title_ar:'الكتابة من الإملاء',topic:'spelling accuracy + punctuation + speed under pressure',level:'B2+'},
+    {unit:13,title:'Highlight Correct Summary',title_ar:'تحديد الملخص الصحيح',topic:'main idea identification — eliminate wrong options',level:'B2+'},
+    {unit:14,title:'Multiple Choice: Listening',title_ar:'اختيار متعدد — استماع',topic:'listening for detail / inference / speaker attitude',level:'B2+'},
+    {unit:15,title:'Reading: Fill in the Blanks',title_ar:'ملء الفراغات — قراءة',topic:'collocation knowledge + grammar clues',level:'B2+'},
+    {unit:16,title:'R/W Fill in the Blanks',title_ar:'ملء الفراغات: قراءة + كتابة',topic:'dropdown selection + context + part of speech',level:'B2+'},
+    {unit:17,title:'Re-order Paragraphs',title_ar:'إعادة ترتيب الفقرات',topic:'discourse markers + pronoun reference + topic flow',level:'B2+'},
+    {unit:18,title:'PTE Scoring: How AI Grades You',title_ar:'كيف يقيّم الذكاء الاصطناعي إجابتك',topic:'pronunciation / fluency / content / form scoring',level:'B2+'},
+    {unit:19,title:'Full Mock: Speaking Section',title_ar:'محاكاة كاملة: قسم التحدث',topic:'full timed speaking section under exam conditions',level:'B2+'},
+    {unit:20,title:'Full Mock: Writing Section',title_ar:'محاكاة كاملة: قسم الكتابة',topic:'full timed writing section under exam conditions',level:'B2+'},
+    {unit:21,title:'Full Mock: Reading Section',title_ar:'محاكاة كاملة: قسم القراءة',topic:'full timed reading section under exam conditions',level:'B2+'},
+    {unit:22,title:'Full Mock: Listening Section',title_ar:'محاكاة كاملة: قسم الاستماع',topic:'full timed listening section under exam conditions',level:'B2+'},
+    {unit:23,title:'Winners Academy: Final Sprint',title_ar:'الأكاديمية: الجولة الأخيرة',topic:'template revision + targeting last weak areas',level:'B2+'},
+    {unit:24,title:'Exam Day Strategy',title_ar:'استراتيجية يوم الامتحان',topic:'timing / section order / calm mindset / day-before prep',level:'B2+'}
+  ]
+};
+
+function getGrammarUnit(day) {
+  const ph = getPhase(day);
+  const units = GRAMMAR_UNITS[ph];
+  if(!units) return null;
+  const phStart = {p1:1, p2:62, p3:123, p4:185};
+  const dayInPhase = day - phStart[ph];
+  const unitIdx = dayInPhase % units.length;
+  return units[unitIdx];
+}
+
+
+function shuffle(a){ return a.sort(()=>Math.random()-0.5); }
+function esc(s){ return (s||'').replace(/'/g,"\\'").replace(/"/g,'&quot;'); }
+
+// ═══════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════
+window.addEventListener('DOMContentLoaded',()=>{
+  load();
+
+  // ── Check API key ──────────────────────────
+  const storedKey = localStorage.getItem('ptej_apikey') || '';
+  if(storedKey) window._apiKey = storedKey;
+
+  // ── Show app immediately (no waiting) ──────
+  const sp = document.getElementById('splash');
+  sp.style.transition = 'opacity 0.4s';
+  sp.style.opacity = '0';
+  setTimeout(()=>{
+    sp.style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    updateUI();
+    resetTimer();
+
+    // If no API key, show key setup screen instead of loading content
+    if(!window._apiKey) {
+      showAPIKeySetup();
+    } else {
+      loadContent();
+      loadVocab();
+    }
+
+    const _ph=getPhase(S.day);
+    const _pteBtn=document.getElementById('pteSimBtn');
+    if(_pteBtn) _pteBtn.style.display=_ph==='p4'?'flex':'none';
+    if(S.lastMs<S.completed.length) checkMs(S.completed.length);
+  }, 400);
+});
+
+function showAPIKeySetup() {
+  const body = document.getElementById('panelBody');
+  body.innerHTML = `
+    <div style="padding:24px">
+      <div style="text-align:center;margin-bottom:20px">
+        <div style="font-size:2rem;margin-bottom:10px">🔑</div>
+        <div style="font-family:'Tajawal',sans-serif;font-size:1rem;color:#fff;font-weight:700;margin-bottom:6px">أدخل Anthropic API Key</div>
+        <div style="font-family:'Tajawal',sans-serif;font-size:0.82rem;color:var(--muted2);line-height:1.65">
+          التطبيق يحتاج API Key للعمل على GitHub Pages.<br>
+          احصل عليه من <a href="https://console.anthropic.com" target="_blank" style="color:var(--accent)">console.anthropic.com</a> → API Keys
+        </div>
+      </div>
+      <input type="password" id="apiKeyInput" placeholder="sk-ant-api03-..." 
+        style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 14px;color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:0.8rem;outline:none;margin-bottom:10px"
+        onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"
+        onkeydown="if(event.key==='Enter')saveAPIKey()" />
+      <button onclick="saveAPIKey()" 
+        style="width:100%;background:var(--accent);border:none;color:var(--bg);padding:12px;border-radius:8px;cursor:pointer;font-weight:700;font-size:0.85rem;font-family:'IBM Plex Mono',monospace">
+        حفظ والبدء →
+      </button>
+      <div style="font-family:'Tajawal',sans-serif;font-size:0.72rem;color:var(--muted);text-align:center;margin-top:10px;line-height:1.5">
+        🔒 المفتاح محفوظ محلياً في متصفحك فقط — لا يُرسل لأي خادم غير Anthropic
+      </div>
+    </div>`;
+}
+
+function saveAPIKey() {
+  const key = document.getElementById('apiKeyInput')?.value?.trim();
+  if(!key || !key.startsWith('sk-')) {
+    alert('المفتاح يجب أن يبدأ بـ sk-');
+    return;
+  }
+  window._apiKey = key;
+  localStorage.setItem('ptej_apikey', key);
+  loadContent();
+  loadVocab();
+}
+
+// Add key reset button to stats
+window.resetAPIKey = () => {
+  localStorage.removeItem('ptej_apikey');
+  window._apiKey = null;
+  showAPIKeySetup();
+};
+</script>
+</body>
+</html>
