@@ -1,0 +1,16 @@
+{
+  "name": "رحلة اللغة الإنجليزية",
+  "short_name": "English App",
+  "description": "تطبيق تعلم اللغة الإنجليزية من A2 إلى B2+",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#8ec5fc",
+  "theme_color": "#6a11cb",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/201/201614.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
