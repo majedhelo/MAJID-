@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My English Journey - PTE Prep</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            margin: 0; padding: 20px; color: #333;
+        }
+        .container { max-width: 900px; margin: auto; background: #ffffff; padding: 30px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        h1 { color: #6a11cb; text-align: center; margin-bottom: 20px; font-weight: 800; }
+        h2 { color: #2575fc; border-bottom: 2px solid #e0c3fc; padding-bottom: 10px; }
+        .upload-box { border: 2px dashed #6a11cb; border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 30px; background: #f8f9fa; }
+        .btn { background: #6a11cb; color: white; border: none; padding: 12px 24px; cursor: pointer; border-radius: 8px; font-size: 16px; font-family: 'Tajawal', sans-serif; font-weight: 700; margin: 5px; text-decoration: none; display: inline-block; }
+        .btn:hover { background: #5a0fab; }
+        .btn-download { background: #e67e22; }
+        .btn-download:hover { background: #d35400; }
+        .card { background: #fdfdff; border-right: 5px solid #8ec5fc; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .card h3 { color: #2c3e50; margin-top: 0; }
+        .vocab-item { background: #ecf0f1; padding: 15px; margin: 10px 0; border-radius: 8px; border-left: 4px solid #e67e22; }
+        .vocab-item strong { color: #d35400; font-size: 1.1em; }
+        .tag { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 0.9em; margin-right: 5px; color: white; }
+        .tag-heavy { background: #e67e22; }
+        .tag-phrasal { background: #9b59b6; }
+        .yt-btn { background: #e74c3c; text-decoration: none; color: white; padding: 8px 16px; border-radius: 6px; display: inline-block; margin-top: 10px; font-weight: bold; }
+        .voa-btn { background: #27ae60; text-decoration: none; color: white; padding: 10px 20px; border-radius: 6px; display: inline-block; margin-top: 10px; font-weight: bold; }
+        .alert { background: #fff3cd; padding: 15px; border-radius: 8px; border-right: 4px solid #ffc107; margin: 10px 0; }
+        .question-box { background: #e8f6f3; padding: 10px; border-radius: 6px; margin-top: 10px; }
+        .question-box em { color: #16a085; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 مسيرتي لتعلم اللغة الإنجليزية</h1>
+        
+        <div class="upload-box">
+            <h3>📥 استيراد درس جديد (JSON)</h3>
+            <p>يمكنك استيراد أي درس قمت بتصميمه لك:</p>
+            <input type="file" id="lessonFile" accept=".json" style="margin: 10px;">
+            <br>
+            <button class="btn" onclick="loadLesson()">عرض الدرس المستورد</button>
+            <button class="btn btn-download" onclick="downloadJSON()">⬇️ تنزيل ملف الدرس الأول (JSON)</button>
+            <button class="btn" onclick="location.reload()" style="background:#2575fc;">عرض الدرس الحالي</button>
+        </div>
+
+        <div id="lessonDisplay"></div>
+    </div>
+
+    <script>
+        const defaultLesson = {
+          "lesson_id": 1,
+          "lesson_title": "المرحلة الأولى - الدرس 1",
+          "grammar": {
+            "topic": "Present Simple vs. Present Continuous",
+            "explanation_ar": "نستخدم المضارع البسيط للتعبير عن العادات والحقائق الثابتة (مثال: I study English every day). أما المضارع المستمر فنستخدمه للتعبير عن أفعال تحدث الآن في وقت التحدث (مثال: I am studying English now).",
+            "explanation_en": "Use Present Simple for habits and facts (e.g., I work every day). Use Present Continuous for actions happening right now at the moment of speaking (e.g., I am working right now).",
+            "youtube_link": "https://www.youtube.com/watch?v=O1_GBJXkSYg",
+            "practice_questions": [
+              {"question": "She usually (go) to the gym on Mondays.", "answer": "goes"},
+              {"question": "Look! The cat (sleep) on the sofa right now.", "answer": "is sleeping"},
+              {"question": "We (not / watch) TV at the moment.", "answer": "are not watching"}
+            ]
+          },
+          "listening": {
+            "instructions": "استمع للقطعة دون قراءة النص مرة، ثم اقرأ النص واستخرج الكلمات، ثم قم بتمرين الظل الصوتي (Shadowing) لتقليد اللكنة الأمريكية.",
+            "voa_link": "https://learningenglish.voanews.com/z/3521"
+          },
+          "vocabulary": {
+            "instructions": "بعد العودة من الاستماع، احفظ هذه الكلمات الأكاديمية ومرادفاتها الثقيلة والخفيفة:",
+            "words": [
+              {
+                "word": "Important",
+                "meaning_ar": "مهم",
+                "heavy_synonym": "Crucial (حاسم)",
+                "phrasal_verb_synonym": "Boil down to (يختصر في)",
+                "example": "It is crucial to practice every day."
+              },
+              {
+                "word": "Reduce",
+                "meaning_ar": "يقلل",
+                "heavy_synonym": "Diminish (يتناقص)",
+                "phrasal_verb_synonym": "Cut down on (يقلل من)",
+                "example": "I need to cut down on my mistakes."
+              },
+              {
+                "word": "Understand",
+                "meaning_ar": "يفهم",
+                "heavy_synonym": "Comprehend (يدرك)",
+                "phrasal_verb_synonym": "Figure out (يفهم)",
+                "example": "I cannot figure out this grammar rule."
+              }
+            ],
+            "srs_note": "ملاحظة: هذه الكلمات ستظهر مجدداً في الدروس القادمة ضمن نصوص القراءة والأسئلة لضمان تثبيتها في الذاكرة طويلة المدى."
+          },
+          "reading": {
+            "instructions": "قم بقراءة قطعتين تفاعليتين على منصة ReadTheory (المستوى المبتدئ Grade 3-6)، وإليك قطعتين تدريبيتين هنا:",
+            "passage_1": "Tom is a high school student. He wakes up early every day because his school is far. Currently, he is reading a book about American history for his project. He wants to comprehend the past to understand the present.",
+            "passage_2": "Sarah works at a local library. She usually wears a blue uniform, but today she is wearing a green one because of a special event. She is trying to cut down on her stress by taking deep breaths."
+          },
+          "production": {
+            "writing_prompt": "اكتب 5 سطور باللغة الإنجليزية عن روتينك اليومي، مستخدماً المضارع البسيط والمستمر، واستخدم كلمة (Crucial) و (Cut down on). انسخ النص وصححه مع الذكاء الاصطناعي على z.ai.",
+            "speaking_prompt": "افتح محادثة صوتية مع الذكاء الاصطناعي على z.ai. تحدث لمدة دقيقتين عن سبب أهمية تعلم اللغة الإنجليزية لك شخصياً. اطلب من الذكاء الاصطناعي تقييم طلاقتك (Fluency) ونطقك (Pronunciation)."
+          }
+        };
+
+        function displayLesson(lesson) {
+            document.getElementById('lessonDisplay').innerHTML = ''; 
+            const display = document.getElementById('lessonDisplay');
+            
+            let html = `<h2>${lesson.lesson_title}</h2>`;
+            
+            html += `<div class="card">
+                <h3>📚 القواعد (Grammar)</h3>
+                <p style="font-weight:bold; color:#6a11cb;">الموضوع: ${lesson.grammar.topic}</p>
+                <p>${lesson.grammar.explanation_ar}</p>
+                <p style="direction: ltr; text-align: left;">${lesson.grammar.explanation_en}</p>
+                <a class="yt-btn" href="${lesson.grammar.youtube_link}" target="_blank">📺 شاهد شرح يوتيوب</a>
+                <div style="margin-top:15px;"><h4>أسئلة الممارسة:</h4>`;
+            lesson.grammar.practice_questions.forEach((q, i) => {
+                html += `<div class="question-box">${i+1}. ${q.question} <br> <em>الإجابة: ${q.answer}</em></div>`;
+            });
+            html += `</div></div>`;
+
+            html += `<div class="card">
+                <h3>🎧 الاستماع (Listening & Shadowing)</h3>
+                <p>${lesson.listening.instructions}</p>
+                <a class="voa-btn" href="${lesson.listening.voa_link}" target="_blank">🔗 اذهب لدرس VOA للاستماع</a>
+                <div class="alert">عُد إلى هنا بعد الانتهاء من التظليل الصوتي (Shadowing) لتعلم الكلمات!</div>
+            </div>`;
+
+            html += `<div class="card">
+                <h3>📝 الكلمات الأكاديمية (Vocabulary)</h3>
+                <p>${lesson.vocabulary.instructions}</p>`;
+            lesson.vocabulary.words.forEach(w => {
+                html += `<div class="vocab-item">
+                            <strong>${w.word}</strong> - ${w.meaning_ar} <br>
+                            <span class="tag tag-heavy">مرادف ثقيل</span> ${w.heavy_synonym} <br>
+                            <span class="tag tag-phrasal">فعل مركب</span> ${w.phrasal_verb_synonym} <br>
+                            <em>مثال: ${w.example}</em>
+                          </div>`;
+            });
+            html += `<p style="font-size: 0.9em; color: gray; margin-top:10px;">${lesson.vocabulary.srs_note}</p></div>`;
+
+            html += `<div class="card">
+                <h3>📖 القراءة (Reading)</h3>
+                <p>${lesson.reading.instructions}</p>
+                <h4>قطع القراءة التدريبية:</h4>
+                <p style="direction: ltr; text-align: left; background:#f9f9f9; padding:10px; border-radius:5px;">${lesson.reading.passage_1}</p>
+                <p style="direction: ltr; text-align: left; background:#f9f9f9; padding:10px; border-radius:5px;">${lesson.reading.passage_2}</p>
+            </div>`;
+
+            html += `<div class="card">
+                <h3>✍️ إنتاج اللغة (Writing & Speaking)</h3>
+                <p><strong>الكتابة:</strong> ${lesson.production.writing_prompt}</p>
+                <p><strong>التحدث:</strong> ${lesson.production.speaking_prompt}</p>
+                <a href="https://z.ai" target="_blank" class="btn" style="background:#2575fc;">🤖 افتح z.ai للتصحيح والتقييم</a>
+            </div>`;
+
+            display.innerHTML = html;
+        }
+
+        function loadLesson() {
+            const fileInput = document.getElementById('lessonFile');
+            if (fileInput.files.length === 0) { alert("الرجاء اختيار ملف الدرس (JSON)"); return; }
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const lesson = JSON.parse(e.target.result);
+                    displayLesson(lesson);
+                } catch (error) { alert("خطأ في قراءة الملف. تأكد أنه بصيغة JSON صحيحة."); }
+            };
+            reader.readAsText(file);
+        }
+
+        function downloadJSON() {
+            const blob = new Blob([JSON.stringify(defaultLesson, null, 2)], {type: "application/json"});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'lesson_01.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        window.onload = function() {
+            displayLesson(defaultLesson);
+        }
+    </script>
+</body>
+</html>
